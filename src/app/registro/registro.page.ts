@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-registro',
@@ -6,10 +7,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
+  registroForm: FormGroup = this.fb.group({}); // Inicialización para evitar null
 
-  constructor() { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    this.registroForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      marcaAuto: ['', Validators.required],
+    });
   }
 
+  onSubmit() {
+    if (this.registroForm.valid) {
+      console.log('Formulario válido', this.registroForm.value);
+    } else {
+      console.log('Formulario no válido');
+    }
+  }
 }
+
