@@ -1,13 +1,38 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>iniciosesion</ion-title>
+    <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">iniciosesion</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+    <!-- Campo de Nombre de Usuario -->
+    <ion-item>
+      <ion-label position="floating">Nombre de Usuario</ion-label>
+      <ion-input type="text" formControlName="username"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+      El nombre de usuario es requerido y debe tener al menos 3 caracteres.
+    </ion-text>
+
+    <!-- Campo de Contraseña -->
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+      La contraseña debe tener al menos 6 caracteres.
+    </ion-text>
+
+    <!-- Botón de Iniciar Sesión -->
+    <ion-button expand="block" type="submit" [disabled]="loginForm.invalid">
+      Iniciar Sesión
+    </ion-button>
+
+    <!-- Enlace para Olvidar Contraseña -->
+    <div class="ion-text-center">
+      <ion-button fill="clear" color="primary" routerLink="/recuperar-password">¿Olvidaste tu contraseña?</ion-button>
+    </div>
+  </form>
 </ion-content>
