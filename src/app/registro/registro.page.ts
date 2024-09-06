@@ -16,6 +16,7 @@ export class RegistroPage implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       marcaAuto: ['', Validators.required],
+      contrasena: ['', [Validators.required, Validators.minLength(6)]] // Agregamos contraseña aquí
     });
   }
 
@@ -27,4 +28,3 @@ export class RegistroPage implements OnInit {
     }
   }
 }
-
