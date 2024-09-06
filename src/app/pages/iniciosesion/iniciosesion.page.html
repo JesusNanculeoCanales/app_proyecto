@@ -7,7 +7,6 @@
 <ion-content class="ion-padding">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-    <!-- Campo de Nombre de Usuario -->
     <ion-item>
       <ion-label position="floating">Nombre de Usuario</ion-label>
       <ion-input type="text" formControlName="username"></ion-input>
@@ -16,7 +15,6 @@
       El nombre de usuario es requerido y debe tener al menos 3 caracteres.
     </ion-text>
 
-    <!-- Campo de Contraseña -->
     <ion-item>
       <ion-label position="floating">Contraseña</ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
@@ -25,14 +23,13 @@
       La contraseña debe tener al menos 6 caracteres.
     </ion-text>
 
-    <!-- Botón de Iniciar Sesión -->
     <ion-button expand="block" type="submit" [disabled]="loginForm.invalid">
       Iniciar Sesión
     </ion-button>
 
-    <!-- Enlace para Olvidar Contraseña -->
     <div class="ion-text-center">
-      <ion-button fill="clear" color="primary" routerLink="/recuperar-password">¿Olvidaste tu contraseña?</ion-button>
+      <ion-button fill="clear" color="primary" (click)="openModal()">¿Olvidaste tu contraseña?</ion-button>
     </div>
   </form>
 </ion-content>
+
