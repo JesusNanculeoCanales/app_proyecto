@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'iniciosesion',
     loadChildren: () => import('./pages/iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)
+  },  {
+    path: 'agendar',
+    loadChildren: () => import('./pages/agendar/agendar.module').then( m => m.AgendarPageModule)
   },
+
   
 
 ];
