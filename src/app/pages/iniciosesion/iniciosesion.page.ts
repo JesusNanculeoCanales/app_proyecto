@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';  // Importa el componente del modal
 
 @Component({
@@ -11,7 +12,12 @@ import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/cont
 export class IniciosesionPage implements OnInit {
   loginForm: FormGroup = this.fb.group({});
 
-  constructor(private fb: FormBuilder, private modalCtrl: ModalController) {}
+  constructor(
+    private fb: FormBuilder,
+    private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController,  // Controlador de carga para animación
+    private router: Router  // Agregamos el Router para la redirección
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -22,7 +28,7 @@ export class IniciosesionPage implements OnInit {
 
   async openModal() {
     const modal = await this.modalCtrl.create({
-      component: ContrasenamodalComponent
+      component: ContrasenamodalComponent,
     });
     await modal.present();
 
@@ -33,9 +39,26 @@ export class IniciosesionPage implements OnInit {
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Formulario válido', this.loginForm.value);
+      const username = this.loginForm.get('username')?.value;  // Obtén el nombre de usuario
+      const loading = await this.loadingCtrl.create({
+        message: 'Iniciando sesión...',
+        duration: 2000  // Simula un tiempo de espera de 2 segundos
+      });
+      await loading.present();
+  
+      // Define NavigationExtras para pasar el nombre de usuario
+      const navigationExtras = {
+        state: {
+          username: username
+        }
+      };
+  
+      // Después de la animación, redirige a home pasando el nombre de usuario
+      loading.onDidDismiss().then(() => {
+        this.router.navigate(['/home'], navigationExtras);  // Redirige a la página de inicio
+      });
     } else {
       console.log('Formulario no válido');
     }
