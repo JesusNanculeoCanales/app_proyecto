@@ -6,6 +6,7 @@
 
 <ion-content class="ion-padding">
   <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+    
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <ion-input type="text" formControlName="nombre"></ion-input>
@@ -20,6 +21,14 @@
     </ion-item>
     <ion-text color="danger" *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched">
       Introduzca un email válido.
+    </ion-text>
+    
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" formControlName="contrasena"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registroForm.get('contrasena')?.invalid && registroForm.get('contrasena')?.touched">
+      La contraseña debe tener al menos 6 caracteres.
     </ion-text>
 
     <ion-item>
