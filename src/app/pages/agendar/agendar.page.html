@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>agendar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="agendarForm" (ngSubmit)="onSubmit()">
+    
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" formControlName="nombre"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="agendarForm.get('nombre')?.invalid && agendarForm.get('nombre')?.touched">
+      El nombre debe tener al menos 3 caracteres.
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input type="tel" formControlName="telefono"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="agendarForm.get('telefono')?.invalid && agendarForm.get('telefono')?.touched">
+      Asegurate de introducir solo numeros (9)
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Matrícula</ion-label>
+      <ion-input type="text" formControlName="matricula"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="agendarForm.get('matricula')?.invalid && agendarForm.get('matricula')?.touched">
+      La matrícula debe contener solo letras, numeros y/o guiones, con un mínimo de 6 y un máximo de 9 caracteres!
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Marca del Automóvil</ion-label>
+      <ion-input type="text" formControlName="marcaAuto"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="agendarForm.get('marcaAuto')?.invalid && agendarForm.get('marcaAuto')?.touched">
+      La marca del automóvil es obligatoria.
+    </ion-text>
+    
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="agendarForm.get('email')?.invalid && agendarForm.get('email')?.touched">
+      Introduzca un email válido.
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-input type="date" formControlName="fecha"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="agendarForm.get('fecha')?.invalid && agendarForm.get('fecha')?.touched">
+      Introduce una fecha válida.
+    </ion-text>
+
+
+
+    <ion-button expand="block" type="submit" [disabled]="agendarForm.invalid">
+      Agendar
+    </ion-button>
+  </form>
+</ion-content>
