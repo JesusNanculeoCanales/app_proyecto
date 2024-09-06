@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as $ from 'jquery';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';  // Importa el componente del modal
+import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';
 
 @Component({
   selector: 'app-iniciosesion',
@@ -10,19 +10,57 @@ import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/cont
   styleUrls: ['./iniciosesion.page.scss'],
 })
 export class IniciosesionPage implements OnInit {
-  loginForm: FormGroup = this.fb.group({});
 
   constructor(
-    private fb: FormBuilder,
     private modalCtrl: ModalController,
-    private loadingCtrl: LoadingController,  // Controlador de carga para animación
-    private router: Router  // Agregamos el Router para la redirección
+    private loadingCtrl: LoadingController,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+    $(document).ready(() => {
+      $('#submitBtn').on('click', async (event) => {
+        event.preventDefault();
+
+        const username = $('#username').val();
+        const password = $('#password').val();
+        let isValid = true;
+
+        // Validación del nombre de usuario
+        if (!username || (typeof username === 'string' && username.length < 3)) {
+          isValid = false;
+          $('#usernameError').show();
+        } else {
+          $('#usernameError').hide();
+        }
+
+        // Validación de la contraseña (al menos 4 números, 3 caracteres, 1 mayúscula)
+        const passwordRegex = /^(?=.*\d{4,})(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/;
+        if (!password || (typeof password === 'string' && !passwordRegex.test(password))) {
+          isValid = false;
+          $('#passwordError').show();
+        } else {
+          $('#passwordError').hide();
+        }
+
+        // Si el formulario es válido, mostrar el loading y redirigir
+        if (isValid) {
+          const loading = await this.loadingCtrl.create({
+            message: 'Iniciando sesión...',
+            duration: 2000
+          });
+          await loading.present();
+
+          loading.onDidDismiss().then(() => {
+            const navigationExtras = {
+              state: {
+                username: username
+              }
+            };
+            this.router.navigate(['/home'], navigationExtras);
+          });
+        }
+      });
     });
   }
 
@@ -35,32 +73,7 @@ export class IniciosesionPage implements OnInit {
     const { data, role } = await modal.onWillDismiss();
     if (role === 'confirm') {
       console.log('Correo ingresado:', data.email);
-      // Aquí puedes agregar la lógica para enviar el correo de recuperación
-    }
-  }
-
-  async onSubmit() {
-    if (this.loginForm.valid) {
-      const username = this.loginForm.get('username')?.value;  // Obtén el nombre de usuario
-      const loading = await this.loadingCtrl.create({
-        message: 'Iniciando sesión...',
-        duration: 2000  // Simula un tiempo de espera de 2 segundos
-      });
-      await loading.present();
-  
-      // Define NavigationExtras para pasar el nombre de usuario
-      const navigationExtras = {
-        state: {
-          username: username
-        }
-      };
-  
-      // Después de la animación, redirige a home pasando el nombre de usuario
-      loading.onDidDismiss().then(() => {
-        this.router.navigate(['/home'], navigationExtras);  // Redirige a la página de inicio
-      });
-    } else {
-      console.log('Formulario no válido');
     }
   }
 }
+
