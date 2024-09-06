@@ -1,39 +1,64 @@
-import { Component } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
+import { ModalController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-contrasenamodal',
   templateUrl: './contrasenamodal.component.html',
   styleUrls: ['./contrasenamodal.component.scss'],
 })
-export class ContrasenamodalComponent {
-  emailForm: FormGroup;
+export class ContrasenamodalComponent implements OnInit {
 
-  constructor(private modalCtrl: ModalController, private fb: FormBuilder) {
-    // Inicializa el formulario de recuperación de contraseña
-    this.emailForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+  constructor(private modalCtrl: ModalController, private toastCtrl: ToastController) {}
+
+  ngOnInit() {
+    $(document).ready(() => {
+      // Validación y envío del formulario
+      $('#submitEmailBtn').on('click', async (event: Event) => {
+        event.preventDefault();
+
+        let isValid = true;
+
+        // Validación del email
+        const email = $('#email').val() as string;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email || !emailRegex.test(email)) {
+          isValid = false;
+          $('#emailError').show();  // Muestra mensaje de error
+        } else {
+          $('#emailError').hide();  // Oculta mensaje de error si es válido
+        }
+
+        if (isValid) {
+          // Mostrar el toast de éxito
+          const toast = await this.toastCtrl.create({
+            message: '¡El correo fue enviado correctamente!',
+            duration: 3000,  // Duración de 3 segundos
+            color: 'success'
+          });
+          await toast.present();
+
+          // Esperar a que el toast desaparezca antes de cerrar el modal
+          toast.onDidDismiss().then(() => {
+            this.confirmar(email);  // Ahora cerramos el modal
+          });
+        }
+      });
+
+      // Al hacer click en cancelar, cierra el modal
+      $('#cancelarBtn').on('click', () => {
+        this.cancelar();
+      });
     });
   }
 
   cancelar() {
-    return this.modalCtrl.dismiss(null, 'cancel');
+    this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  confirmar() {
-    if (this.emailForm.valid) {
-      return this.modalCtrl.dismiss(this.emailForm.value, 'confirm');
-    } else {
-      return this.modalCtrl.dismiss(null, 'cancel');  // Siempre retorna algo
-    }
-  }
-
-  onSubmit() {
-    if (this.emailForm.valid) {
-      this.confirmar();
-    }
+  confirmar(email: string) {
+    this.modalCtrl.dismiss({ email }, 'confirm');
   }
 }
-
 
