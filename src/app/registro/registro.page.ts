@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-registro',
@@ -7,24 +7,51 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
-  registroForm: FormGroup = this.fb.group({}); // Inicialización para evitar null
 
-  constructor(private fb: FormBuilder) {}
+  constructor() {}
 
   ngOnInit() {
-    this.registroForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      marcaAuto: ['', Validators.required],
-      contrasena: ['', [Validators.required, Validators.minLength(6)]] // Agregamos contraseña aquí
-    });
-  }
+    $(document).ready(() => {
+      $('#submitBtn').on('click', (event: Event) => {  
+        event.preventDefault();
+        
+        let isValid = true;
 
-  onSubmit() {
-    if (this.registroForm.valid) {
-      console.log('Formulario válido', this.registroForm.value);
-    } else {
-      console.log('Formulario no válido');
-    }
+        // Validación del nombre
+        const nombre = $('#nombre').val();
+        if (!nombre || (typeof nombre === 'string' && nombre.length < 3)) {
+          isValid = false;
+          $('#nombreError').show();  // Mostrar el error
+        } else {
+          $('#nombreError').hide();  // Esconder el error si es válido
+        }
+
+        // Validación del email
+        const email = $('#email').val();
+        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+        if (!email || (typeof email === 'string' && !emailPattern.test(email))) {
+          isValid = false;
+          $('#emailError').show();  // Mostrar el error
+        } else {
+          $('#emailError').hide();  // Esconder el error si es válido
+        }
+
+        // Validación de la contraseña con el patrón solicitado
+        const contrasena = $('#contrasena').val();
+        const regex = /^(?=.*[A-Z])(?=(.*\d){4})(?=(.*[a-zA-Z]){3}).{8,}$/;
+        
+        if (!contrasena || (typeof contrasena === 'string' && !regex.test(contrasena))) {
+          isValid = false;
+          $('#contrasenaError').show();  // Mostrar el error
+        } else {
+          $('#contrasenaError').hide();  // Esconder el error si es válida
+        }
+
+        if (isValid) {
+          // Procesar el formulario si todo es válido
+          alert('Formulario válido');
+        }
+      });
+    });
   }
 }
