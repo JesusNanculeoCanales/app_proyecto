@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agendar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form id="agendarForm">
+    
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" id="nombre"></ion-input>
+    </ion-item>
+    <ion-text color="danger" id="nombreError" hidden>
+      El nombre debe tener al menos 3 caracteres.
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input type="tel" id="telefono"></ion-input>
+    </ion-item>
+    <ion-text color="danger" id="telefonoError" hidden>
+      Asegúrate de introducir solo números (9 dígitos).
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Matrícula</ion-label>
+      <ion-input type="text" id="matricula"></ion-input>
+    </ion-item>
+    <ion-text color="danger" id="matriculaError" hidden>
+      La matrícula debe contener solo letras, números y/o guiones, con un mínimo de 6 y un máximo de 9 caracteres.
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Marca del Automóvil</ion-label>
+      <ion-input type="text" id="marcaAuto"></ion-input>
+    </ion-item>
+    <ion-text color="danger" id="marcaAutoError" hidden>
+      La marca del automóvil es obligatoria.
+    </ion-text>
+    
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" id="email"></ion-input>
+    </ion-item>
+    <ion-text color="danger" id="emailError" hidden>
+      Introduzca un email válido.
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-input type="date" id="fecha"></ion-input>
+    </ion-item>
+    <ion-text color="danger" id="fechaError" hidden>
+      Introduce una fecha válida.
+    </ion-text>
+
+    <ion-button expand="block" id="submitBtn">Agendar</ion-button>
+
+  </form>
+
+  <!-- Loading indicator -->
+  <ion-loading id="loadingIndicator" message="Procesando agendamiento..." duration="2000"></ion-loading>
+</ion-content>
+
