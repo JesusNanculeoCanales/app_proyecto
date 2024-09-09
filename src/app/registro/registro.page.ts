@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
+import * as $ from 'jquery';  // Importamos jQuery para manejar eventos del DOM
 
 @Component({
   selector: 'app-registro',
@@ -11,45 +11,58 @@ export class RegistroPage implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    // $(document).ready() asegura que el DOM esté completamente cargado antes de ejecutar el código jQuery.
     $(document).ready(() => {
+
+      // Aquí manejamos el evento 'click' del botón de envío del formulario
       $('#submitBtn').on('click', (event: Event) => {  
-        event.preventDefault();
+        event.preventDefault();  // Previene que el formulario se envíe de forma predeterminada, permitiendo validaciones personalizadas
         
-        let isValid = true;
+        let isValid = true;  // Variable para comprobar si todas las validaciones pasan
 
+        // =====================
         // Validación del nombre
-        const nombre = $('#nombre').val();
-        if (!nombre || (typeof nombre === 'string' && nombre.length < 3)) {
-          isValid = false;
-          $('#nombreError').show();  // Mostrar el error
+        // =====================
+        const nombre = $('#nombre').val();  // Obtiene el valor del campo 'nombre'
+        if (!nombre || (typeof nombre === 'string' && nombre.length < 3)) {  // Verifica si el nombre tiene al menos 3 caracteres
+          isValid = false;  // Si no es válido, cambia `isValid` a false
+          $('#nombreError').show();  // Muestra el mensaje de error en el DOM
         } else {
-          $('#nombreError').hide();  // Esconder el error si es válido
+          $('#nombreError').hide();  // Esconde el mensaje de error si el valor es válido
         }
 
+        // =====================
         // Validación del email
-        const email = $('#email').val();
-        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-        if (!email || (typeof email === 'string' && !emailPattern.test(email))) {
-          isValid = false;
-          $('#emailError').show();  // Mostrar el error
+        // =====================
+        const email = $('#email').val();  // Obtiene el valor del campo 'email'
+        const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;  // Patrón para validar direcciones de correo electrónico
+        if (!email || (typeof email === 'string' && !emailPattern.test(email))) {  // Valida que el email siga el formato correcto
+          isValid = false;  // Si no es válido, cambia `isValid` a false
+          $('#emailError').show();  // Muestra el mensaje de error
         } else {
-          $('#emailError').hide();  // Esconder el error si es válido
+          $('#emailError').hide();  // Esconde el mensaje de error si el email es válido
         }
 
-        // Validación de la contraseña con el patrón solicitado
-        const contrasena = $('#contrasena').val();
-        const regex = /^(?=.*[A-Z])(?=(.*\d){4})(?=(.*[a-zA-Z]){3}).{8,}$/;
+        // ====================================
+        // Validación de la contraseña
+        // Patrón: 4 números, 1 mayúscula, 3 letras
+        // ====================================
+        const contrasena = $('#contrasena').val();  // Obtiene el valor del campo 'contrasena'
+        const regex = /^(?=.*[A-Z])(?=(.*\d){4})(?=(.*[a-zA-Z]){3}).{8,}$/;  // validar la contraseña
         
-        if (!contrasena || (typeof contrasena === 'string' && !regex.test(contrasena))) {
-          isValid = false;
-          $('#contrasenaError').show();  // Mostrar el error
+        if (!contrasena || (typeof contrasena === 'string' && !regex.test(contrasena))) {  // Verifica que la contraseña sea válida
+          isValid = false;  // Si no es válida, cambia `isValid` a false
+          $('#contrasenaError').show();  // Muestra el mensaje de error
         } else {
-          $('#contrasenaError').hide();  // Esconder el error si es válida
+          $('#contrasenaError').hide();  // Esconde el mensaje de error si la contraseña es válida
         }
 
+        // =====================
+        // Si todas las validaciones son correctas
+        // =====================
         if (isValid) {
-          // Procesar el formulario si todo es válido
-          alert('Formulario válido');
+          alert('Formulario válido');  // Muestra un mensaje o ejecuta alguna acción cuando todo es válido
+          // Aquí puedes agregar el código para enviar el formulario
         }
       });
     });

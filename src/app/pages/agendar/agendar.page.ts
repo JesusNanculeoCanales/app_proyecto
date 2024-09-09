@@ -80,7 +80,7 @@ export class AgendarPage implements OnInit {
         // Si el formulario es válido, mostrar el loading y redirigir
         if (isValid) {
           const loading = await this.loadingCtrl.create({
-            message: 'Procesando agendamiento...',
+            message: 'Agendando...',
             duration: 2000
           });
           await loading.present();
