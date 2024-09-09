@@ -44,3 +44,16 @@ ion-icon {
   font-size: 27px;
 }
 
+.logo {
+  width: 400px; /* Ajusta el tamaño del logo según tu preferencia */
+  position: absolute;
+  top: 100px; /* Ajusta esta distancia según la altura del buscador */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* Asegura que el logo esté encima del fondo */
+  opacity: 0.5; /* Ajusta la opacidad para que se fusione con el contenido */
+}
+
+ion-content {
+  position: relative;
+}

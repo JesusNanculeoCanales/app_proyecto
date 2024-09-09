@@ -11,10 +11,10 @@ import { IniciosesionPage } from './iniciosesion.page';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,  // Asegúrate de importar ReactiveFormsModule
+    ReactiveFormsModule,  
     IonicModule,
     IniciosesionPageRoutingModule
   ],
-  declarations: [IniciosesionPage]
+  declarations: [IniciosesionPage] // Declara la página de inicio de sesión como parte de este módulo
 })
 export class IniciosesionPageModule {}
