@@ -64,9 +64,10 @@ export class IniciosesionPage implements OnInit {
     });
   }
 
+// Método para abrir el modal de recuperación de contraseña
   async openModal() {
     const modal = await this.modalCtrl.create({
-      component: ContrasenamodalComponent,
+      component: ContrasenamodalComponent,  // Especifica el componente que actúa como modal
     });
     await modal.present();
 

@@ -51,6 +51,7 @@
       <ion-label position="floating">Fecha</ion-label>
       <ion-input type="date" id="fecha"></ion-input>
     </ion-item>
+    <!-- Mensaje de error si no se selecciona una fecha válida -->
     <ion-text color="danger" id="fechaError" hidden>
       Introduce una fecha válida.
     </ion-text>
@@ -59,7 +60,7 @@
 
   </form>
 
-  <!-- Loading indicator -->
+   <!-- Indicador de carga mientras se procesa el agendamiento -->
   <ion-loading id="loadingIndicator" message="Procesando agendamiento..." duration="2000"></ion-loading>
 </ion-content>
 
