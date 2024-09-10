@@ -5,7 +5,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ContrasenamodalComponent } from './componentes/contrasenamodal/contrasenamodal.component';  // Asegúrate de importar el modal
+import { ContrasenamodalComponent } from './componentes/contrasenamodal/contrasenamodal.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';  // Asegúrate de importar el modal
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { ContrasenamodalComponent } from './componentes/contrasenamodal/contrase
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
