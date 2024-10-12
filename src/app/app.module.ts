@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContrasenamodalComponent } from './componentes/contrasenamodal/contrasenamodal.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Importa BrowserAnimationsModule
 
 @NgModule({
   declarations: [
@@ -18,9 +19,10 @@ import { HttpClientModule } from '@angular/common/http';
     IonicModule.forRoot(),
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule  // Añade BrowserAnimationsModule aquí
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideAnimationsAsync()],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
