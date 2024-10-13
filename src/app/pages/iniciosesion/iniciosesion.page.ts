@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { ModalController, LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';
 
 @Component({

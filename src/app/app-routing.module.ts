@@ -42,7 +42,11 @@ const routes: Routes = [
   {
     path: 'edit-pieza/:id',
     loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then( m => m.EditPiezaPageModule)
+  },  {
+    path: 'error404',
+    loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
   }
+
 
 ];
 

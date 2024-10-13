@@ -2,10 +2,17 @@
   "piezas": [
     {
       "id": "1",
-      "nombre": "Hola",
+      "nombre": "Walter",
       "descripcion": "Penelope",
       "cantidad": 8,
       "valor": 7000
+    },
+    {
+      "id": "2",
+      "nombre": "Jefe",
+      "descripcion": "Chapa",
+      "cantidad": 3,
+      "valor": 1000
     }
   ]
 }
