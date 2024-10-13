@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/list-piezas"></ion-back-button>  <!-- Redirige a la lista de piezas -->
+    </ion-buttons>
+    <ion-title>Agregar Pieza</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Nombre de la Pieza</ion-label>
+    <ion-input [(ngModel)]="pieza.nombre"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-input [(ngModel)]="pieza.descripcion"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Cantidad</ion-label>
+    <ion-input [(ngModel)]="pieza.cantidad" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Valor</ion-label>
+    <ion-input [(ngModel)]="pieza.valor" type="number"></ion-input>  <!-- Campo de valor -->
+  </ion-item>
+
+  <ion-button expand="block" (click)="crearPieza()">Crear Pieza</ion-button>
+</ion-content>

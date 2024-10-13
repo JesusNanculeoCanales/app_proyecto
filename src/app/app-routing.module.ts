@@ -6,8 +6,8 @@ import { AuthGuard } from './services/auth-guard.service';  // Importa el guard 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+
   },
   {
     path: '',
@@ -28,8 +28,22 @@ const routes: Routes = [
   },
   {
     path: 'agendar',
-    loadChildren: () => import('./pages/agendar/agendar.module').then( m => m.AgendarPageModule)
+    loadChildren: () => import('./pages/agendar/agendar.module').then( m => m.AgendarPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'list-piezas',
+    loadChildren: () => import('./pages/list-piezas/list-piezas.module').then( m => m.ListPiezasPageModule)
+  },
+  {
+    path: 'add-pieza',
+    loadChildren: () => import('./pages/add-pieza/add-pieza.module').then( m => m.AddPiezaPageModule)
+  },
+  {
+    path: 'edit-pieza/:id',
+    loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then( m => m.EditPiezaPageModule)
   }
+
 ];
 
 @NgModule({

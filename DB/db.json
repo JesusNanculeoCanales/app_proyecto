@@ -1,0 +1,11 @@
+{
+  "piezas": [
+    {
+      "id": "1",
+      "nombre": "Hola",
+      "descripcion": "Penelope",
+      "cantidad": 8,
+      "valor": 7000
+    }
+  ]
+}
