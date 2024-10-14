@@ -10,14 +10,15 @@ export class HomePage implements OnInit {
   username: string = 'Invitado';  // Valor por defecto si no hay usuario
 
   constructor(private router: Router) {
-
-     // Intenta obtener datos de la navegación actual
+    // Intenta obtener datos de la navegación actual
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state && navigation.extras.state['username']) {
       this.username = navigation.extras.state['username'];
     }
   }
-  
-// Método del ciclo de vida del componente que se ejecuta cuando la página ha sido inicializada
-  ngOnInit() {}
+
+  // Método del ciclo de vida del componente que se ejecuta cuando la página ha sido inicializada
+  ngOnInit() {
+    console.log('ngOnInit ejecutado');
+  }
 }
