@@ -1,5 +1,9 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Botón de retroceso que redirige a 'login' o a la página anterior -->
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
     <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,14 +23,14 @@
       <ion-input type="password" id="password"></ion-input>
     </ion-item>
     <ion-text color="danger" id="passwordError" hidden>
-      La contraseña debe contener Mayuscula, 3 letras y 4 numeros como minimo.
+      La contraseña debe contener Mayúscula, 3 letras y 4 números como mínimo.
     </ion-text>
 
     <ion-button id="submitBtn" expand="block">
       Iniciar Sesión
     </ion-button>
 
-       <!-- Botón para abrir el modal de recuperación de contraseña -->
+    <!-- Botón para abrir el modal de recuperación de contraseña -->
     <div class="ion-text-center">
       <ion-button fill="clear" color="primary" (click)="openModal()">¿Olvidaste tu contraseña?</ion-button>
     </div>

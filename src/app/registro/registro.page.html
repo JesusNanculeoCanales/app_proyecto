@@ -1,5 +1,9 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Botón de retroceso que redirige a 'login' o a la página anterior -->
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
     <ion-title>Registro de Usuario</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -27,7 +31,7 @@
       <ion-input type="password" id="contrasena"></ion-input>
     </ion-item>
     <ion-text color="danger" id="contrasenaError" hidden>
-      La contraseña debe contener Mayuscula, 3 letras y 4 numeros como minimo.
+      La contraseña debe contener Mayúscula, 3 letras y 4 números como mínimo.
     </ion-text>
 
     <ion-button expand="block" id="submitBtn">Registrar</ion-button>
