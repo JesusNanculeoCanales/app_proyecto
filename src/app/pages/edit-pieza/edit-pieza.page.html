@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/list-piezas"></ion-back-button>  <!-- Redirige a la lista de piezas -->
+    </ion-buttons>
+    <ion-title>Modificar Pieza</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-item lines="full">
+      <ion-label position="floating">ID</ion-label>
+      <ion-input type="text" name="txId" [(ngModel)]="pieza.id" disabled></ion-input>  <!-- El ID no se debe modificar -->
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre de la Pieza</ion-label>
+      <ion-input type="text" name="txNombre" [(ngModel)]="pieza.nombre" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input type="text" name="txDescripcion" [(ngModel)]="pieza.descripcion" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Cantidad</ion-label>
+      <ion-input type="number" name="txCantidad" [(ngModel)]="pieza.cantidad" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Valor</ion-label>
+      <ion-input type="number" name="txValor" [(ngModel)]="pieza.valor" required></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="guardarCambios()" color="primary" expand="block">Guardar Cambios</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+

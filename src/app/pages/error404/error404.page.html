@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Flecha de regreso a la izquierda -->
+    <ion-buttons slot="start">
+      <ion-button fill="clear" [routerLink]="['/home']">
+        <ion-icon name="arrow-back" size="large"></ion-icon>  <!-- Flecha mediana -->
+      </ion-button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col size="12">
+        <ion-img class="logo" src="/assets/icon/llaverota404.png"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <h1 class="numero ion-text-center">404</h1>
+        <h1 class="letra ion-text-center">Not Found</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center boton">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

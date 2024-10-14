@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+
+    <!-- Flecha hacia la izquierda para regresar a la página anterior -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Lista de Piezas</ion-title>
+
+    <!-- Botón para agregar una nueva pieza a la derecha -->
+    <ion-buttons slot="end">
+      <ion-button color="primary" [routerLink]="['/add-pieza']">
+        Agregar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngFor="let pieza of piezas">
+      <ion-label>
+        <h2>{{ pieza.nombre }}</h2>
+        <p>{{ pieza.descripcion }}</p>
+        <p>Cantidad: {{ pieza.cantidad }}</p>
+        <p>Valor: {{ pieza.valor }} CLP</p>
+      </ion-label>
+
+      <!-- Botón para modificar la pieza -->
+      <ion-button color="warning" [routerLink]="['/edit-pieza', pieza.id]">
+        Modificar
+      </ion-button>
+
+      <!-- Botón para eliminar la pieza -->
+      <ion-button color="danger" (click)="eliminarPieza(pieza.id)">
+        Eliminar
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>
