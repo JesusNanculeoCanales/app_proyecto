@@ -12,7 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    ContrasenamodalComponent  // Declara el modal aquí
+    ContrasenamodalComponent,
   ],
   imports: [
     BrowserModule,

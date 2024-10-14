@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gestión de Piezas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="addPieza()">
+    <ion-item>
+      <ion-label position="floating">Nombre de la Pieza</ion-label>
+      <ion-input type="text" [(ngModel)]="pieza.nombre" name="nombrePieza" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Cantidad</ion-label>
+      <ion-input type="number" [(ngModel)]="pieza.cantidad" name="cantidad" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input type="text" [(ngModel)]="pieza.descripcion" name="descripcion" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Valor</ion-label>
+      <ion-input type="number" [(ngModel)]="pieza.valor" name="valor" required></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" type="submit">Agregar Pieza</ion-button>
+  </form>
+
+  <ion-list>
+    <ion-item *ngFor="let pieza of piezas">
+      <ion-label>
+        <h2>{{ pieza.nombre }}</h2>
+        <p>Cantidad: {{ pieza.cantidad }}</p>
+        <p>Descripción: {{ pieza.descripcion }}</p>
+        <p>Valor: {{ pieza.valor }}</p>
+      </ion-label>
+      <ion-button color="danger" (click)="deletePieza(pieza.id)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -7,7 +7,6 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-
   },
   {
     path: '',
@@ -29,7 +28,7 @@ const routes: Routes = [
   {
     path: 'agendar',
     loadChildren: () => import('./pages/agendar/agendar.module').then( m => m.AgendarPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard]  // Protegida por el guard de autenticación
   },
   {
     path: 'list-piezas',
@@ -42,12 +41,11 @@ const routes: Routes = [
   {
     path: 'edit-pieza/:id',
     loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then( m => m.EditPiezaPageModule)
-  },  {
+  },
+  {
     path: 'error404',
     loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
   }
-
-
 ];
 
 @NgModule({
@@ -56,4 +54,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { } // Define y exporta el módulo de enrutamiento principal de la aplicación
+export class AppRoutingModule { }  // Define y exporta el módulo de enrutamiento principal de la aplicación
