@@ -1,5 +1,9 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Botón de retroceso que redirige a 'home' -->
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Agendar</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -63,4 +67,3 @@
    <!-- Indicador de carga mientras se procesa el agendamiento -->
   <ion-loading id="loadingIndicator" message="Procesando agendamiento..." duration="2000"></ion-loading>
 </ion-content>
-

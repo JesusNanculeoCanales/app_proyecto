@@ -14,6 +14,12 @@ export class HomePage implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras.state && navigation.extras.state['username']) {
       this.username = navigation.extras.state['username'];
+    } else {
+      // Si no hay datos en la navegación, buscar en el localStorage
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user && user.nombre) {
+        this.username = user.nombre;
+      }
     }
   }
 

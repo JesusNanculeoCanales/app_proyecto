@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './services/auth-guard.service';  // Importa el guard que has creado
+import { GuardService } from './services/guard.guard';  // Importamos el guard
 
 // Definición de rutas para la aplicación
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
     path: '',
@@ -15,43 +16,45 @@ const routes: Routes = [
   },
   {
     path: 'registro',
-    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+    loadChildren: () => import('./registro/registro.module').then(m => m.RegistroPageModule)
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'iniciosesion',
-    loadChildren: () => import('./pages/iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)
+    loadChildren: () => import('./pages/iniciosesion/iniciosesion.module').then(m => m.IniciosesionPageModule)
   },
   {
     path: 'agendar',
-    loadChildren: () => import('./pages/agendar/agendar.module').then( m => m.AgendarPageModule),
-    canActivate: [AuthGuard]  // Protegida por el guard de autenticación
+    loadChildren: () => import('./pages/agendar/agendar.module').then(m => m.AgendarPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
     path: 'list-piezas',
-    loadChildren: () => import('./pages/list-piezas/list-piezas.module').then( m => m.ListPiezasPageModule)
+    loadChildren: () => import('./pages/list-piezas/list-piezas.module').then(m => m.ListPiezasPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
     path: 'add-pieza',
-    loadChildren: () => import('./pages/add-pieza/add-pieza.module').then( m => m.AddPiezaPageModule)
+    loadChildren: () => import('./pages/add-pieza/add-pieza.module').then(m => m.AddPiezaPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
     path: 'edit-pieza/:id',
-    loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then( m => m.EditPiezaPageModule)
+    loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then(m => m.EditPiezaPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
     path: 'error404',
-    loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
+    loadChildren: () => import('./pages/error404/error404.module').then(m => m.Error404PageModule)
   },
   {
     path: 'geolocalizacion',
-    loadChildren: () => import('./geolocalizacion/geolocalizacion.module').then(m => m.GeolocalizacionPageModule)
-  },
- 
-
+    loadChildren: () => import('./geolocalizacion/geolocalizacion.module').then(m => m.GeolocalizacionPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  }
 ];
 
 @NgModule({
@@ -60,4 +63,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }  // Define y exporta el módulo de enrutamiento principal de la aplicación
+export class AppRoutingModule {}
