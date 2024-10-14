@@ -45,7 +45,13 @@ const routes: Routes = [
   {
     path: 'error404',
     loadChildren: () => import('./pages/error404/error404.module').then( m => m.Error404PageModule)
-  }
+  },
+  {
+    path: 'geolocalizacion',
+    loadChildren: () => import('./geolocalizacion/geolocalizacion.module').then(m => m.GeolocalizacionPageModule)
+  },
+ 
+
 ];
 
 @NgModule({
