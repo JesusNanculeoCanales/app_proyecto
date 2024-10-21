@@ -6,8 +6,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContrasenamodalComponent } from './componentes/contrasenamodal/contrasenamodal.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Correcto módulo de animaciones
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  //  módulo de animaciones
 import { HttpClientModule } from '@angular/common/http';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx'; //sql
 
 @NgModule({
   declarations: [
@@ -20,10 +21,12 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule  // Añadir este módulo
+    BrowserAnimationsModule  // modulo animaciones
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    SQLite  // se agrego sqlite
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
