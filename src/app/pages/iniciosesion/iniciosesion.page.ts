@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
+import { Component } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { DatabaseService } from '../../services/database.service';  // Servicio de SQLite
 import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';
 
 @Component({
@@ -9,67 +9,76 @@ import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/cont
   templateUrl: './iniciosesion.page.html',
   styleUrls: ['./iniciosesion.page.scss'],
 })
-export class IniciosesionPage implements OnInit {
+export class IniciosesionPage {
+
+  username: string = '';
+  password: string = '';
+  
+  usernameError: boolean = false;
+  passwordError: boolean = false;
 
   constructor(
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
-    private router: Router
+    private router: Router,
+    private databaseService: DatabaseService  // Inyectamos el servicio de SQLite
   ) {}
 
-  ngOnInit() {
-    $(document).ready(() => {
-      $('#submitBtn').on('click', async (event) => {
-        event.preventDefault();
+  // Método para iniciar sesión
+  async iniciarSesion() {
+    let isValid = true;
 
-        const username = $('#username').val();
-        const password = $('#password').val();
-        let isValid = true;
+    // Validación del nombre de usuario
+    if (!this.username || this.username.length < 3) {
+      this.usernameError = true;
+      isValid = false;
+    } else {
+      this.usernameError = false;
+    }
 
-        // Validación del nombre de usuario
-        if (!username || (typeof username === 'string' && username.length < 3)) {
-          isValid = false;
-          $('#usernameError').show();
-        } else {
-          $('#usernameError').hide();
-        }
+    // Validación de la contraseña
+    const passwordRegex = /^(?=.*\d{4,})(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/;
+    if (!this.password || !passwordRegex.test(this.password)) {
+      this.passwordError = true;
+      isValid = false;
+    } else {
+      this.passwordError = false;
+    }
 
-        // Validación de la contraseña
-        const passwordRegex = /^(?=.*\d{4,})(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/;
-        if (!password || (typeof password === 'string' && !passwordRegex.test(password))) {
-          isValid = false;
-          $('#passwordError').show();
-        } else {
-          $('#passwordError').hide();
-        }
-
-        if (isValid) {
-          // Recuperar los usuarios registrados desde localStorage
-          const users = JSON.parse(localStorage.getItem('users') || '[]');
-          const user = users.find((u: any) => u.nombre === username && u.contrasena === password);
-
-          if (user) {
-            // Mostrar el loading y redirigir
-            const loading = await this.loadingCtrl.create({
-              message: 'Iniciando sesión...',
-              duration: 2000
-            });
-            await loading.present();
-
-            loading.onDidDismiss().then(() => {
-              // Guardar al usuario como "usuario autenticado"
-              localStorage.setItem('user', JSON.stringify(user));
-
-              // Redirigir a la página de inicio (home)
-              this.router.navigate(['/home']);
-            });
-          } else {
-            // Si las credenciales son incorrectas
-            alert('Nombre de usuario o contraseña incorrectos');
-          }
-        }
+    if (isValid) {
+      // Mostrar el loading
+      const loading = await this.loadingCtrl.create({
+        message: 'Iniciando sesión...',
+        duration: 2000
       });
-    });
+      await loading.present();
+
+      try {
+        // Verificar las credenciales en la base de datos SQLite
+        const user = await this.databaseService.loginUser(this.username, this.password);
+
+        if (user) {
+          // Guardar el usuario autenticado (en localStorage o donde lo prefieras)
+          localStorage.setItem('user', JSON.stringify(user));
+
+          // Redirigir a la página de inicio
+          this.router.navigate(['/home']);
+        } else {
+          alert('Nombre de usuario o contraseña incorrectos');
+        }
+      } catch (error) {
+        // Comprobamos si el error es de tipo Error antes de acceder a la propiedad message
+        if (error instanceof Error) {
+          alert('Error al iniciar sesión: ' + error.message);
+        } else {
+          alert('Ocurrió un error desconocido al iniciar sesión');
+        }
+        console.error('Error al iniciar sesión:', error);
+      }
+
+      // Ocultar el loading después de 2 segundos
+      await loading.dismiss();
+    }
   }
 
   // Método para abrir el modal de recuperación de contraseña

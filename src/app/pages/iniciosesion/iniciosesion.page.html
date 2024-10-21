@@ -1,38 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <!-- Botón de retroceso que redirige a 'login' o a la página anterior -->
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
     <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form id="loginForm">
-    <ion-item>
-      <ion-label position="floating">Nombre de Usuario</ion-label>
-      <ion-input type="text" id="username"></ion-input>
-    </ion-item>
-    <ion-text color="danger" id="usernameError" hidden>
-      El nombre de usuario debe tener al menos 3 caracteres.
-    </ion-text>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre de usuario</ion-label>
+    <ion-input [(ngModel)]="username"></ion-input>
+  </ion-item>
+  <p *ngIf="usernameError" class="error-text">El nombre de usuario debe tener al menos 3 caracteres.</p>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" id="password"></ion-input>
-    </ion-item>
-    <ion-text color="danger" id="passwordError" hidden>
-      La contraseña debe contener Mayúscula, 3 letras y 4 números como mínimo.
-    </ion-text>
+  <ion-item>
+    <ion-label position="floating">Contraseña</ion-label>
+    <ion-input [(ngModel)]="password" type="password"></ion-input>
+  </ion-item>
+  <p *ngIf="passwordError" class="error-text">
+    La contraseña debe tener al menos 8 caracteres, una letra mayúscula y 4 números.
+  </p>
 
-    <ion-button id="submitBtn" expand="block">
-      Iniciar Sesión
-    </ion-button>
-
-    <!-- Botón para abrir el modal de recuperación de contraseña -->
-    <div class="ion-text-center">
-      <ion-button fill="clear" color="primary" (click)="openModal()">¿Olvidaste tu contraseña?</ion-button>
-    </div>
-  </form>
+  <ion-button expand="block" (click)="iniciarSesion()">Iniciar Sesión</ion-button>
+  <ion-button expand="block" color="medium" (click)="openModal()">¿Olvidaste tu contraseña?</ion-button>
 </ion-content>

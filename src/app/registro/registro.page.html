@@ -1,39 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <!-- Botón de retroceso que redirige a 'login' o a la página anterior -->
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registro de Usuario</ion-title>
+    <ion-title>Registro</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form id="registroForm">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" id="nombre"></ion-input>
-    </ion-item>
-    <ion-text color="danger" id="nombreError" hidden>
-      El nombre debe tener al menos 3 caracteres.
-    </ion-text>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="nombre" type="text"></ion-input>
+  </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" id="email"></ion-input>
-    </ion-item>
-    <ion-text color="danger" id="emailError" hidden>
-      Introduzca un email válido.
-    </ion-text>
+  <ion-item>
+    <ion-label position="floating">Email</ion-label>
+    <ion-input [(ngModel)]="correo" type="email"></ion-input>
+  </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" id="contrasena"></ion-input>
-    </ion-item>
-    <ion-text color="danger" id="contrasenaError" hidden>
-      La contraseña debe contener Mayúscula, 3 letras y 4 números como mínimo.
-    </ion-text>
+  <ion-item>
+    <ion-label position="floating">Contraseña</ion-label>
+    <ion-input [(ngModel)]="password" type="password"></ion-input>
+  </ion-item>
 
-    <ion-button expand="block" id="submitBtn">Registrar</ion-button>
-  </form>
+  <ion-button expand="block" (click)="registrarUsuario()">Registrar</ion-button>
 </ion-content>
