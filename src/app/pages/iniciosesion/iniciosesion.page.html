@@ -11,8 +11,8 @@
 <ion-content class="ion-padding">
   <form id="loginForm">
     <ion-item>
-      <ion-label position="floating">Nombre de Usuario</ion-label>
-      <ion-input type="text" id="username"></ion-input>
+      <ion-label position="floating">Nombre de Usuario (Correo)</ion-label>
+      <ion-input type="text" id="username" [(ngModel)]="nombre_usuario"></ion-input>
     </ion-item>
     <ion-text color="danger" id="usernameError" hidden>
       El nombre de usuario debe tener al menos 3 caracteres.
@@ -20,13 +20,13 @@
 
     <ion-item>
       <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" id="password"></ion-input>
+      <ion-input type="password" id="password" [(ngModel)]="clave"></ion-input>
     </ion-item>
     <ion-text color="danger" id="passwordError" hidden>
       La contraseña debe contener Mayúscula, 3 letras y 4 números como mínimo.
     </ion-text>
 
-    <ion-button id="submitBtn" expand="block">
+    <ion-button id="submitBtn" expand="block" (click)="iniciar_sesion()">
       Iniciar Sesión
     </ion-button>
 

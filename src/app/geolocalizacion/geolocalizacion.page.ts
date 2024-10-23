@@ -20,12 +20,18 @@ export class GeolocalizacionPage implements OnInit {
 
   async loadMap() {
     try {
-      const coordinates = await Geolocation.getCurrentPosition();
+      // Solicitar la ubicación con alta precisión
+      const coordinates = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,  // Alta precisión
+        timeout: 10000,            // Opcional: tiempo de espera en milisegundos
+        maximumAge: 0              // Opcional: no reutilizar ubicaciones antiguas
+      });
+
       const latLng = new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude);
 
       const mapOptions = {
         center: latLng,
-        zoom: 15,
+        zoom: 18,  // Mayor zoom para ver más detalles en la ubicación
         mapTypeId: google.maps.MapTypeId.ROADMAP,
       };
 

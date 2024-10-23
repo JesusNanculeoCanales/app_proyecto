@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';
+import { BasededatosService } from 'src/app/services/basededatos.service';
 
 @Component({
   selector: 'app-iniciosesion',
@@ -10,66 +10,65 @@ import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/cont
   styleUrls: ['./iniciosesion.page.scss'],
 })
 export class IniciosesionPage implements OnInit {
+  nombre_usuario = '';
+  clave = '';
+
+  showUsernameError = false;
+  showPasswordError = false;
 
   constructor(
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
-    private router: Router
+    private router: Router,
+    private db: BasededatosService
   ) {}
 
-  ngOnInit() {
-    $(document).ready(() => {
-      $('#submitBtn').on('click', async (event) => {
-        event.preventDefault();
+  ngOnInit() {}
 
-        const username = $('#username').val();
-        const password = $('#password').val();
-        let isValid = true;
+  async iniciar_sesion() {
+    // Reiniciar los errores de validación
+    this.showUsernameError = false;
+    this.showPasswordError = false;
 
-        // Validación del nombre de usuario
-        if (!username || (typeof username === 'string' && username.length < 3)) {
-          isValid = false;
-          $('#usernameError').show();
-        } else {
-          $('#usernameError').hide();
-        }
+    let isValid = true;
 
-        // Validación de la contraseña
-        const passwordRegex = /^(?=.*\d{4,})(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/;
-        if (!password || (typeof password === 'string' && !passwordRegex.test(password))) {
-          isValid = false;
-          $('#passwordError').show();
-        } else {
-          $('#passwordError').hide();
-        }
+    // Validación del nombre de usuario
+    if (!this.nombre_usuario || this.nombre_usuario.length < 3) {
+      this.showUsernameError = true;
+      isValid = false;
+    }
 
-        if (isValid) {
-          // Recuperar los usuarios registrados desde localStorage
-          const users = JSON.parse(localStorage.getItem('users') || '[]');
-          const user = users.find((u: any) => u.nombre === username && u.contrasena === password);
+    // Validación de la contraseña
+    const passwordRegex = /^(?=.*\d{4,})(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/;
+    if (!this.clave || !passwordRegex.test(this.clave)) {
+      this.showPasswordError = true;
+      isValid = false;
+    }
 
-          if (user) {
-            // Mostrar el loading y redirigir
-            const loading = await this.loadingCtrl.create({
-              message: 'Iniciando sesión...',
-              duration: 2000
-            });
-            await loading.present();
+    if (isValid) {
+      try {
+        // Mostrar el loading
+        const loading = await this.loadingCtrl.create({
+          message: 'Iniciando sesión...',
+          duration: 2000
+        });
+        await loading.present();
 
-            loading.onDidDismiss().then(() => {
-              // Guardar al usuario como "usuario autenticado"
-              localStorage.setItem('user', JSON.stringify(user));
+        // Intentar iniciar sesión
+        const usuario = await this.db.buscarUsuariosUnicoLogin(this.nombre_usuario, this.clave);
 
-              // Redirigir a la página de inicio (home)
-              this.router.navigate(['/home']);
-            });
+        loading.onDidDismiss().then(() => {
+          if (usuario) {
+            this.db.presentAlert('Sesión Iniciada');
+            this.router.navigate(['/home']);
           } else {
-            // Si las credenciales son incorrectas
-            alert('Nombre de usuario o contraseña incorrectos');
+            this.db.presentAlert('Usuario o Contraseña incorrectos');
           }
-        }
-      });
-    });
+        });
+      } catch (error) {
+        this.db.presentAlert('Ocurrió un error al iniciar sesión');
+      }
+    }
   }
 
   // Método para abrir el modal de recuperación de contraseña

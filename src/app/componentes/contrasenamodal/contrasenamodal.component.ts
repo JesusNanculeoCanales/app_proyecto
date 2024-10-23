@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { ModalController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';  // Importa el Router para la navegación
 
 @Component({
   selector: 'app-contrasenamodal',
@@ -9,7 +10,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 })
 export class ContrasenamodalComponent implements OnInit {
 
-  constructor(private modalCtrl: ModalController, private toastCtrl: ToastController) {}
+  constructor(private modalCtrl: ModalController, private toastCtrl: ToastController, private router: Router) {}  // Agrega Router en el constructor
 
   ngOnInit() {
     $(document).ready(() => {
@@ -46,9 +47,9 @@ export class ContrasenamodalComponent implements OnInit {
         }
       });
 
-      // Al hacer click en cancelar, cierra el modal
-      $('#cancelarBtn').on('click', () => {
-        this.cancelar();
+      // Si el usuario hace clic en la flecha de retroceso
+      $('ion-back-button').on('click', () => {
+        this.router.navigate(['/iniciosesion']);  // Redirige manualmente a 'iniciosesion'
       });
     });
   }
@@ -61,4 +62,3 @@ export class ContrasenamodalComponent implements OnInit {
     this.modalCtrl.dismiss({ email }, 'confirm');
   }
 }
-

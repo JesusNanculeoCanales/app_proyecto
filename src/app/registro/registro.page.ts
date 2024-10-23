@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
-import { AuthService } from '../services/auth.service';  // Asegúrate de que la ruta es correcta
+import { BasededatosService } from '../services/basededatos.service';  // Asegúrate de que la ruta es correcta
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,13 +10,13 @@ import { Router } from '@angular/router';
 })
 export class RegistroPage implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private basededatosService: BasededatosService, private router: Router) {}
 
   ngOnInit() {
     $(document).ready(() => {
-      $('#submitBtn').on('click', (event: Event) => {
+      $('#submitBtn').on('click', async (event: Event) => {
         event.preventDefault();
-        
+
         let isValid = true;
 
         const nombre = $('#nombre').val();
@@ -50,15 +50,19 @@ export class RegistroPage implements OnInit {
         if (isValid) {
           const newUser = {
             nombre: nombre,
-            email: email,
-            contrasena: contrasena
+            correo: email,
+            clave: contrasena,
+            rol_idrol: 2  // Aquí puedes decidir qué rol asignar al nuevo usuario
           };
 
-          if (this.authService.registrarUsuario(newUser)) {
+          // Insertar el nuevo usuario en la base de datos
+          const resultado = await this.basededatosService.registrarUsuario(newUser);
+
+          if (resultado) {
             alert('Usuario registrado exitosamente');
             this.router.navigate(['/login']);
           } else {
-            alert('El usuario ya está registrado.');
+            alert('Error: El usuario ya está registrado o ocurrió un error.');
           }
         }
       });
