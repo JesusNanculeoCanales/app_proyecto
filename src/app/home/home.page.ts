@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { BasededatosService } from '../services/basededatos.service';  // Asegúrate de importar tu servicio correctamente
 
 @Component({
   selector: 'app-home',
@@ -9,22 +9,27 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
   username: string = 'Invitado';  // Valor por defecto si no hay usuario
 
-  constructor(private router: Router) {
-    // Intenta obtener datos de la navegación actual
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation && navigation.extras.state && navigation.extras.state['username']) {
-      this.username = navigation.extras.state['username'];
-    } else {
-      // Si no hay datos en la navegación, buscar en el localStorage
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      if (user && user.nombre) {
-        this.username = user.nombre;
-      }
-    }
+  constructor(private basededatosService: BasededatosService) {}
+
+  ngOnInit() {
+    this.obtenerUsuario();  // Llamamos al método para obtener el nombre del usuario cuando se inicie la página
   }
 
-  // Método del ciclo de vida del componente que se ejecuta cuando la página ha sido inicializada
-  ngOnInit() {
-    console.log('ngOnInit ejecutado');
+  obtenerUsuario() {
+    // Llamamos al servicio para obtener el nombre del usuario logueado desde localStorage
+    this.basededatosService.obtenerUsuarioLogueado().then(nombre => {
+      if (nombre) {
+        this.username = nombre;  // Asignamos el nombre obtenido al username
+      } else {
+        this.username = 'Invitado';  // Si no hay un usuario, mostramos "Invitado"
+      }
+    });
+  }
+
+  // Cerrar sesión y eliminar el nombre del usuario de localStorage
+  logout() {
+    localStorage.removeItem('nombreUsuario');  // Eliminamos el nombre del usuario del localStorage
+    this.username = 'Invitado';  // Volvemos a mostrar "Invitado"
+    // Aquí podrías agregar una redirección o cualquier otra acción necesaria al cerrar sesión
   }
 }

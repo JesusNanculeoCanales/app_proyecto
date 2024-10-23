@@ -110,6 +110,7 @@ export class BasededatosService {
     });
   }
 
+  // Buscar y validar el login del usuario, luego almacenar el nombre en localStorage
   async buscarUsuariosUnicoLogin(correoUsu: string, claveUsu: string) {
     try {
       const res = await this.database.executeSql('SELECT * from usuarios WHERE correo = ? AND clave = ?;', [correoUsu, claveUsu]);
@@ -123,11 +124,25 @@ export class BasededatosService {
           clave: res.rows.item(0).clave,
           rol_idrol: res.rows.item(0).rol_idrol
         };
+
+        // Almacenar el nombre del usuario en localStorage
+        localStorage.setItem('nombreUsuario', usuario.nombre);
       }
 
       return usuario;
     } catch (e: any) {
       this.presentAlert('Error de buscar Usuario Unico: ' + e.message);
+      return null;
+    }
+  }
+
+  // Obtener el usuario logueado desde localStorage
+  async obtenerUsuarioLogueado(): Promise<string | null> {
+    try {
+      const nombre = localStorage.getItem('nombreUsuario');
+      return nombre ? nombre : null;
+    } catch (e: any) {
+      this.presentAlert('Error obteniendo el usuario logueado: ' + e.message);
       return null;
     }
   }
