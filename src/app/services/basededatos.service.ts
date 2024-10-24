@@ -4,11 +4,18 @@ import { Usuario } from '../tablas/usuario';
 import { Rol } from '../tablas/rol';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Pieza } from '../tablas/pieza';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasededatosService {
+
+
+  //DROPS DE PRUEBA
+  dropRol: string = 'DROP TABLE rol;'
+  dropUsuarios: string = 'DROP TABLE usuarios;'
+  dropPiezas: string = 'DROP TABLE piezas;'
 
   constructor(private platform: Platform, private sqlite: SQLite, private alertController: AlertController) { 
     this.crearBD();
@@ -48,14 +55,95 @@ export class BasededatosService {
     '2'
   );`;
 
+  registroUsuario2: string = `INSERT OR IGNORE INTO usuarios(
+    id_usu,
+    nombre,
+    correo,
+    clave, 
+    rol_idrol
+  ) VALUES (
+    2,
+    'admin', 
+    'admin@gmail.com',
+    'Clave.1234', 
+    '1'
+  );`;
+
   listaUsuario = new BehaviorSubject([]);
 
-  // Observable para manipular el estado de la BD
-  private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  dbState() {
-    return this.isDBReady.asObservable();
-  }
+
+  //Crear tabla de piezas
+  tablaPieza: string =`CREATE TABLE IF NOT EXISTS piezas(
+    id_pieza INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre VARCHAR(30) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL,
+    cantidad INTEGER NOT NULL,
+    precio INTEGER NOT NULL,
+    fecha_adquisicion DATE NOT NULL,
+    usuario_idusu INTEGER NOT NULL,
+    FOREIGN KEY (usuario_idusu) REFERENCES usuarios(id_usu)
+  )`;
+
+  registroPieza1: string = `INSERT OR IGNORE INTO piezas(
+  id_pieza,
+  nombre,
+  descripcion,
+  cantidad,
+  precio,
+  fecha_adquisicion,
+  usuario_idusu
+  ) VALUES (
+   1,
+   'FRENOS TOYOTA',
+   'prueba de descripcion',
+   13,
+   15000,
+   '2024-10-21',
+   '1'
+   );`;
+
+  registroPieza2: string = `INSERT OR IGNORE INTO piezas(
+    id_pieza,
+    nombre,
+    descripcion,
+    cantidad,
+    precio,
+    fecha_adquisicion,
+    usuario_idusu
+    ) VALUES (
+     2,
+     'MANUBRIO CHEVROLET',
+     'prueba de descripcion2',
+     18,
+     20000,
+     '2024-10-22',
+     '1'
+     );`;
+
+
+  
+  listaPiezas = new BehaviorSubject([]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Roles
   fetchRoles(): Observable<Rol[]> {
@@ -81,6 +169,19 @@ export class BasededatosService {
       this.presentAlert('Error de buscar Roles: ' + e.message);
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Usuario
   fetchUsuario(): Observable<Usuario[]> {
@@ -126,6 +227,7 @@ export class BasededatosService {
         };
 
         // Almacenar el nombre del usuario en localStorage
+        localStorage.setItem('id_usu', usuario.id_usu);
         localStorage.setItem('nombreUsuario', usuario.nombre);
       }
 
@@ -169,6 +271,86 @@ export class BasededatosService {
     }
   }
 
+
+
+
+
+
+// Piezas
+fetchPiezas(): Observable<Pieza[]> {
+  return this.listaPiezas.asObservable();
+}
+
+buscarPiezas() {
+  return this.database.executeSql('SELECT * FROM piezas', []).then(res => {
+    let items: Pieza[] = [];
+
+    if (res.rows.length > 0) {
+      for (var i = 0; i < res.rows.length; i++) {
+        items.push({
+          id_pieza: res.rows.item(i).id_pieza,
+          nombre: res.rows.item(i).nombre,
+          descripcion: res.rows.item(i).descripcion,
+          cantidad: res.rows.item(i).cantidad,
+          precio: res.rows.item(i).precio,
+          fecha_adquisicion: res.rows.item(i).fecha_adquisicion,
+          usuario_idusu: res.rows.item(i).usuario_idusu
+        });
+      }
+    }
+
+    this.listaPiezas.next(items as any);
+
+  }).catch(e => {
+    this.presentAlert('Error de buscar Piezas: ' + e.message);
+  });
+}
+
+async anadirPieza(nombre: string, descripcion: string, cantidad: number, precio: number, fecha_adquisicion: Date, usuario_idusu: number){
+  try {
+    const res = await this.database.executeSql('INSERT INTO piezas(nombre, descripcion,cantidad,precio,fecha_adquisicion,usuario_idusu) VALUES (?,?,?,?,?,?);', [nombre, descripcion,cantidad,precio,fecha_adquisicion,usuario_idusu]);
+    // Obtener la ID del usuario recién insertado
+    const id_pieza = res.insertId;
+
+    // Llamar a buscarUsuarios() u otra lógica si es necesario
+    await this.buscarPiezas();
+
+    // Devolver la ID del usuario recién insertado
+    return id_pieza;
+  }
+  catch (e: any) {
+    this.presentAlert('Error de insertar Piezas: ' + e.message);
+  }
+
+}
+
+
+borrarPiezas(id_pieza: any) {
+  return this.database.executeSql('DELETE FROM piezas WHERE id_pieza = ?;', [id_pieza]).then(res => {
+    this.buscarPiezas();
+  }).catch(e => {
+    this.presentAlert('Error de borrar Piezas: ' + e.message);
+  })
+}
+
+
+
+
+
+
+
+
+
+  //BASE DE DATOS
+
+  // Observable para manipular el estado de la BD
+  private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  dbState() {
+    return this.isDBReady.asObservable();
+  }
+
+
   crearBD() {
     this.platform.ready().then(() => {
       this.sqlite.create({
@@ -185,24 +367,57 @@ export class BasededatosService {
 
   async crearTablas() {
     try {
+
+      //CREACION DE TABLAS
       await this.database.executeSql(this.tablaRol, []);
       await this.database.executeSql(this.tablaUsuario, []);
+      await this.database.executeSql(this.tablaPieza, []);
 
+      //INSERT DE REGISTROS
       await this.database.executeSql(this.registroRol1, []);
       await this.database.executeSql(this.registroRol2, []);
+      
       await this.database.executeSql(this.registroUsuario1, []);
+      await this.database.executeSql(this.registroUsuario2, []);
+
+      await this.database.executeSql(this.registroPieza1, []);
+      await this.database.executeSql(this.registroPieza2, []);
 
       this.isDBReady.next(true);
       this.buscarRoles();
       this.buscarUsuarios();
+      this.buscarPiezas();
     } catch (e: any) {
       this.presentAlert('Error de crear Tablas: ' + e.message);
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+  //FUNCIONES EXTRA
   async presentAlert(message: string) {
     const alert = await this.alertController.create({
       header: 'Alerta',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  
+  async presentAlertExito(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Informativo',
       message: message,
       buttons: ['OK']
     });

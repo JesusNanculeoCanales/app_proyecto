@@ -19,21 +19,21 @@
 
 <ion-content class="ion-padding">
   <ion-list>
-    <ion-item *ngFor="let pieza of piezas">
+    <ion-item *ngFor="let pieza of listaPiezas">
       <ion-label>
         <h2>{{ pieza.nombre }}</h2>
         <p>{{ pieza.descripcion }}</p>
         <p>Cantidad: {{ pieza.cantidad }}</p>
-        <p>Valor: {{ pieza.valor }} CLP</p>
+        <p>Valor: {{ pieza.precio }} CLP</p>
       </ion-label>
 
       <!-- Botón para modificar la pieza -->
-      <ion-button color="warning" [routerLink]="['/edit-pieza', pieza.id]">
+      <ion-button color="warning" [routerLink]="['/edit-pieza', pieza.id_pieza]">
         Modificar
       </ion-button>
 
       <!-- Botón para eliminar la pieza -->
-      <ion-button color="danger" (click)="eliminarPieza(pieza.id)">
+      <ion-button color="danger" (click)="crearAlertaELIMINAR(pieza.id_pieza)">
         Eliminar
       </ion-button>
     </ion-item>

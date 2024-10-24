@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PiezaService } from '../../services/pieza.service';
 import { Router } from '@angular/router';  // Importar Router para la redirección
+import { BasededatosService } from 'src/app/services/basededatos.service';
 
 @Component({
   selector: 'app-add-pieza',
@@ -14,25 +15,34 @@ export class AddPiezaPage {
     nombre: '',
     descripcion: '',
     cantidad: 0,
-    valor: 0
+    precio: 0,
+    fecha_adquisicion: new Date
   };
 
   constructor(
     private piezaService: PiezaService,
-    private router: Router  // Inyectar el Router para redirigir
+    private router: Router,
+    private db: BasededatosService
   ) {}
 
   // Método para crear una nueva pieza con ID como cadena
   crearPieza() {
-    this.piezaService.getPiezas().subscribe(piezas => {
-      const maxId = piezas.length > 0 ? Math.max(...piezas.map(p => parseInt(p.id))) : 0;  // Obtener el ID más alto como número
-      this.pieza.id = String(maxId + 1);  // Asignar el siguiente ID disponible como cadena
-      console.log('Creando pieza con ID: ', this.pieza.id);
 
-      this.piezaService.addPieza(this.pieza).subscribe(() => {
-        alert('Pieza creada exitosamente');
-        this.router.navigate(['/list-piezas']);  // Redirigir a la lista de piezas después de crear la pieza
-      });
-    });
+    //OBTENER USUARIO ACTUAL
+    const usu_actual = localStorage.getItem('id_usu');
+
+    if(usu_actual){
+      const usu_idusu = parseInt(usu_actual);
+      //AÑADIR PIEZA
+      this.db.anadirPieza(this.pieza.nombre,this.pieza.descripcion,this.pieza.cantidad,this.pieza.precio, this.pieza.fecha_adquisicion,usu_idusu).then(res =>{
+        
+        this.router.navigate(['/list-piezas']);
+        this.db.presentAlertExito('Agregada pieza '+this.pieza.nombre);
+      }
+      )
+    }else{
+      this.db.presentAlert('Error al obtener el usuario actual :(');
+    }
+
   }
 }
