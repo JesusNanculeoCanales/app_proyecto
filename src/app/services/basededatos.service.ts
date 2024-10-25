@@ -333,6 +333,62 @@ borrarPiezas(id_pieza: any) {
   })
 }
 
+// Buscar una pieza por su ID
+async buscarPiezaPorId(id_pieza: number): Promise<any> {
+  try {
+    const res = await this.database.executeSql('SELECT * FROM piezas WHERE id_pieza = ?', [id_pieza]);
+    if (res.rows.length > 0) {
+      return res.rows.item(0);  // Retornar la pieza encontrada
+    }
+    return null;  // Si no se encuentra la pieza
+  } catch (e: any) {
+    this.presentAlert('Error al buscar la pieza: ' + e.message);
+    return null;
+  }
+}
+
+// Método para actualizar una pieza
+async actualizarPieza(id_pieza: number, nombre: string, descripcion: string, cantidad: number, precio: number, usuario_idusu: number): Promise<void> {
+  try {
+    await this.database.executeSql(
+      'UPDATE piezas SET nombre = ?, descripcion = ?, cantidad = ?, precio = ?, usuario_idusu = ? WHERE id_pieza = ?;',
+      [nombre, descripcion, cantidad, precio, usuario_idusu, id_pieza]
+    );
+  } catch (e: any) {
+    this.presentAlert('Error al actualizar la pieza: ' + e.message);
+    throw e;  // Lanza el error para que sea capturado en la página
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Buscar el correo en la base de datos SQLite
 async buscarUsuarioPorCorreo(correo: string): Promise<Usuario | null> {
   try {

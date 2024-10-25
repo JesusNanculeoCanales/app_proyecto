@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PiezaService } from '../../services/pieza.service';
+import { BasededatosService } from 'src/app/services/basededatos.service';  // Servicio para manejar SQLite
 
 @Component({
   selector: 'app-edit-pieza',
@@ -10,33 +10,56 @@ import { PiezaService } from '../../services/pieza.service';
 export class EditPiezaPage implements OnInit {
 
   pieza: any = {
-    id: null,
+    id_pieza: null,
     nombre: '',
     descripcion: '',
     cantidad: 0,
-    valor: 0
+    precio: 0  // Aquí se usa 'precio' en lugar de 'valor'
   };
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private piezaService: PiezaService,
+    private db: BasededatosService,  // Usamos BasededatosService para SQLite
     private router: Router
   ) { }
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');  // Obtener el ID de la pieza
-    if (id) {
-      this.piezaService.getPiezaById(+id).subscribe(data => {
-        this.pieza = data;  // Cargar los datos de la pieza
-      });
+    const id_pieza = this.activatedRoute.snapshot.paramMap.get('id_pieza');  // Obtener el ID de la pieza de la ruta
+    if (id_pieza) {
+      this.cargarPieza(parseInt(id_pieza));  // Cargar los datos de la pieza
     }
+  }
+
+  // Cargar los datos de la pieza desde la base de datos
+  cargarPieza(id_pieza: number) {
+    this.db.buscarPiezaPorId(id_pieza).then((pieza) => {
+      if (pieza) {
+        this.pieza = pieza;  // Asignar los valores de la pieza al formulario
+      }
+    });
   }
 
   // Método para guardar los cambios en la pieza
   guardarCambios() {
-    this.piezaService.updatePieza(this.pieza).subscribe(() => {
-      alert('Pieza modificada exitosamente');
-      this.router.navigate(['/list-piezas']);  // Redirige de vuelta a la lista
-    });
+    const usu_actual = localStorage.getItem('id_usu');  // Obtener el ID del usuario actual
+    if (usu_actual) {
+      const usuario_idusu = parseInt(usu_actual);  // Convertir a número
+
+      this.db.actualizarPieza(
+        this.pieza.id_pieza,
+        this.pieza.nombre,
+        this.pieza.descripcion,
+        this.pieza.cantidad,
+        this.pieza.precio,
+        usuario_idusu
+      ).then(() => {
+        this.db.presentAlertExito('Pieza modificada exitosamente');
+        this.router.navigate(['/list-piezas']);  // Redirigir a la lista de piezas
+      }).catch((error) => {
+        this.db.presentAlert('Error al modificar la pieza: ' + error.message);
+      });
+    } else {
+      this.db.presentAlert('No se encontró un usuario logueado');
+    }
   }
 }

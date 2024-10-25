@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BasededatosService } from '../services/basededatos.service';  // Asegúrate de importar tu servicio correctamente
+import { NavController } from '@ionic/angular'; // Importar NavController para manejar la navegación
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { BasededatosService } from '../services/basededatos.service';  // Asegú
 export class HomePage implements OnInit {
   username: string = 'Invitado';  // Valor por defecto si no hay usuario
 
-  constructor(private basededatosService: BasededatosService) {}
+  constructor(private basededatosService: BasededatosService, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.obtenerUsuario();  // Llamamos al método para obtener el nombre del usuario cuando se inicie la página
@@ -28,8 +29,14 @@ export class HomePage implements OnInit {
 
   // Cerrar sesión y eliminar el nombre del usuario de localStorage
   logout() {
-    localStorage.removeItem('nombreUsuario');  // Eliminamos el nombre del usuario del localStorage
-    this.username = 'Invitado';  // Volvemos a mostrar "Invitado"
-    // Aquí podrías agregar una redirección o cualquier otra acción necesaria al cerrar sesión
+    // Limpiar todos los datos del usuario del localStorage
+    localStorage.removeItem('nombreUsuario');  // Eliminar el nombre del usuario
+    localStorage.removeItem('id_usu');  // Eliminar el id del usuario para asegurarse de que la sesión termine
+
+    // Volver a mostrar "Invitado"
+    this.username = 'Invitado';
+
+    // Redirigir a la página de login
+    this.navCtrl.navigateRoot('/login');
   }
 }

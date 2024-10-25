@@ -50,7 +50,8 @@
           </ion-button>
         </ion-item>
         <ion-item>
-          <ion-button routerLink="/login" class="btm" fill="clear">
+          <!-- Aquí está el botón modificado para llamar a logout -->
+          <ion-button (click)="logout()" class="btm" fill="clear">
             <ion-icon slot="start" name="exit"></ion-icon>Salir
           </ion-button>
         </ion-item>
