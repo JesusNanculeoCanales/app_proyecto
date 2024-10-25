@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ContrasenamodalComponent } from '../../componentes/contrasenamodal/contrasenamodal.component';
 import { BasededatosService } from 'src/app/services/basededatos.service';
@@ -19,8 +19,9 @@ export class IniciosesionPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
-    private router: Router,
-    private db: BasededatosService
+    //private router: Router,
+    private db: BasededatosService,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {}
@@ -60,7 +61,8 @@ export class IniciosesionPage implements OnInit {
         loading.onDidDismiss().then(() => {
           if (usuario) {
             this.db.presentAlert('Sesión Iniciada');
-            this.router.navigate(['/home']);
+            //this.router.navigate(['/home']);
+            this.navCtrl.navigateRoot('/home');
           } else {
             this.db.presentAlert('Usuario o Contraseña incorrectos');
           }
