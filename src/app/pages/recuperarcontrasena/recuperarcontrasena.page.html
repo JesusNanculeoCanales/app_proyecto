@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recuperar Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Correo Electrónico</ion-label>
+    <ion-input type="email" [(ngModel)]="correo"></ion-input>
+  </ion-item>
+
+  <ion-text color="danger" *ngIf="correoNoEncontrado">
+    El correo ingresado no existe en nuestros registros.
+  </ion-text>
+
+  <ion-button expand="block" (click)="verificarCorreo()">Verificar Correo</ion-button>
+</ion-content>

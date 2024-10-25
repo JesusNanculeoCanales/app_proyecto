@@ -333,6 +333,54 @@ borrarPiezas(id_pieza: any) {
   })
 }
 
+// Buscar el correo en la base de datos SQLite
+async buscarUsuarioPorCorreo(correo: string): Promise<Usuario | null> {
+  try {
+    const res = await this.database.executeSql('SELECT * FROM usuarios WHERE correo = ?;', [correo]);
+    if (res.rows.length > 0) {
+      return {
+        id_usu: res.rows.item(0).id_usu,
+        nombre: res.rows.item(0).nombre,
+        correo: res.rows.item(0).correo,
+        clave: res.rows.item(0).clave,
+        rol_idrol: res.rows.item(0).rol_idrol
+      };
+    } else {
+      return null; // No encontrado
+    }
+  } catch (e: any) {
+    this.presentAlert('Error de buscar Usuario por correo: ' + e.message);
+    return null;
+  }
+}
+
+// Actualizar la clave del usuario en la base de datos
+async actualizarClaveUsuario(id_usu: number, nuevaClave: string): Promise<void> {
+  try {
+    await this.database.executeSql('UPDATE usuarios SET clave = ? WHERE id_usu = ?;', [nuevaClave, id_usu]);
+  } catch (e: any) {
+    this.presentAlert('Error al actualizar la contraseña: ' + e.message);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

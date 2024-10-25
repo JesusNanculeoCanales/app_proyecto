@@ -54,7 +54,18 @@ const routes: Routes = [
     path: 'geolocalizacion',
     loadChildren: () => import('./geolocalizacion/geolocalizacion.module').then(m => m.GeolocalizacionPageModule),
     canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  },
+  {
+    path: 'recuperarcontrasena',
+    loadChildren: () => import('./pages/recuperarcontrasena/recuperarcontrasena.module').then( m => m.RecuperarcontrasenaPageModule)
+  },
+  
+  
+  {
+    path: 'cambiar-contrasena',
+    loadChildren: () => import('./pages/cambiar-contrasena/cambiar-contrasena.module').then( m => m.CambiarContrasenaPageModule)
   }
+
 ];
 
 @NgModule({
