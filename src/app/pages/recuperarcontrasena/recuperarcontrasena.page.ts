@@ -29,7 +29,7 @@ export class RecuperarcontrasenaPage implements OnInit {
     const usuarioLocalStorage = localStorage.getItem(this.correo);
 
     if (usuarioSQLite || usuarioLocalStorage) {
-      // Si el correo existe en SQLite o Local Storage, avanzar a cambiar contraseña
+      localStorage.setItem('correo_cambio_clave',this.correo)
       this.navCtrl.navigateForward('/cambiar-contrasena');
     } else {
       // Mostrar error si el correo no existe

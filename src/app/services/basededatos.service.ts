@@ -411,9 +411,9 @@ async buscarUsuarioPorCorreo(correo: string): Promise<Usuario | null> {
 }
 
 // Actualizar la clave del usuario en la base de datos
-async actualizarClaveUsuario(id_usu: number, nuevaClave: string): Promise<void> {
+async actualizarClaveUsuario(correo: string, nuevaClave: string): Promise<void> {
   try {
-    await this.database.executeSql('UPDATE usuarios SET clave = ? WHERE id_usu = ?;', [nuevaClave, id_usu]);
+    await this.database.executeSql('UPDATE usuarios SET clave = ? WHERE correo = ?;', [nuevaClave, correo]);
   } catch (e: any) {
     this.presentAlert('Error al actualizar la contraseña: ' + e.message);
   }

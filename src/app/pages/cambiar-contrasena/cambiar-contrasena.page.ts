@@ -27,21 +27,17 @@ export class CambiarContrasenaPage implements OnInit {
       return;
     }
 
-    // Obtener el ID del usuario desde localStorage
-    const idUsuario = localStorage.getItem('id_usu');
-    console.log('ID de usuario recuperado:', idUsuario); // Verificación en consola
-
-    // Validar si el usuario está logueado
-    if (!idUsuario) {
-      this.db.presentAlert('No se encontró un usuario logueado.');
-      return;
-    }
-
     try {
       // Cambiar la contraseña en la base de datos
-      await this.db.actualizarClaveUsuario(parseInt(idUsuario), this.nuevaClave);
-      this.db.presentAlertExito('Contraseña actualizada exitosamente');
-      this.navCtrl.navigateRoot('/login'); // Redirigir al login
+      const correo_cambio = localStorage.getItem('correo_cambio_clave')
+      if(correo_cambio){
+        await this.db.actualizarClaveUsuario(correo_cambio, this.nuevaClave);
+        this.db.presentAlertExito('Contraseña actualizada exitosamente');
+        localStorage.removeItem('correo_cambio_clave')
+        this.navCtrl.navigateRoot('/login');
+      }else{
+        this.db.presentAlert('Error al obtener el correo para el cambio.')
+      }
     } catch (e) {
       this.db.presentAlert('Error al actualizar la contraseña. Intenta nuevamente.');
     }
