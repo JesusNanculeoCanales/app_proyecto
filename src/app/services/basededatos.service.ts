@@ -389,7 +389,7 @@ async actualizarPieza(id_pieza: number, nombre: string, descripcion: string, can
 
 
 
-// Buscar el correo en la base de datos SQLite
+// Buscar el correo en la base de datos SQLite1
 async buscarUsuarioPorCorreo(correo: string): Promise<Usuario | null> {
   try {
     const res = await this.database.executeSql('SELECT * FROM usuarios WHERE correo = ?;', [correo]);
