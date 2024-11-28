@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cámara</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button (click)="takePicture()" expand="block" shape="round" color="primary">
+    <ion-icon slot="start" name="camera"></ion-icon>Tomar Foto
+  </ion-button>
+
+  <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+
+  <div *ngIf="capturedImage" class="image-preview">
+    <h3>Imagen Capturada:</h3>
+    <img [src]="capturedImage" alt="Captured Image" />
+  </div>
+</ion-content>
