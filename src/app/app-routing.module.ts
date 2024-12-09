@@ -69,7 +69,18 @@ const routes: Routes = [
     path: 'camara',
     loadChildren: () => import('./pages/camara/camara.module').then( m => m.CamaraPageModule),
     canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  },
+  {
+    path: 'mecanicos',
+    loadChildren: () => import('./pages/mecanicos/mecanicos.module').then( m => m.MecanicosPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  },
+  {
+    path: 'ayuda',
+    loadChildren: () => import('./pages/ayuda/ayuda.module').then( m => m.AyudaPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   }
+
 
 
 ];

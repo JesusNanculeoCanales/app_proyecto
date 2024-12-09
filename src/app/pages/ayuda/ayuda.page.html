@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Botón de retroceso que redirige a 'home' -->
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Ayuda</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <section class="faq-section">
+      <h2>Preguntas Frecuentes</h2>
+      <div class="faq">
+        <h3>¿Cómo puedo agendar una cita?</h3>
+        <p>Puedes agendar una cita desde la sección "Agendar" en la aplicación, seleccionando una fecha y hora disponibles.</p>
+      </div>
+      <div class="faq">
+        <h3>¿Qué pasa si mi auto necesita reparaciones?</h3>
+        <p>Los mecánicos se encargarán de realizar las reparaciones necesarias para que tu auto pase la revisión técnica.</p>
+      </div>
+    </section>
+
+    <section class="contact-form">
+      <h2>Contáctanos</h2>
+      <form>
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input type="text" placeholder="Escribe tu nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Correo Electrónico</ion-label>
+          <ion-input type="email" placeholder="Escribe tu correo electrónico"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Mensaje</ion-label>
+          <ion-textarea rows="5" placeholder="Escribe tu mensaje aquí..."></ion-textarea>
+        </ion-item>
+        <ion-button expand="block" type="submit" color="primary">Enviar</ion-button>
+      </form>
+    </section>
+  </div>
+</ion-content>

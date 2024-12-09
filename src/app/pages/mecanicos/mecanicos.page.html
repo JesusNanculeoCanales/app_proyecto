@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Botón de retroceso que redirige a 'home' -->
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Lista de mecanicos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div *ngIf="mecanicos.length === 0" class="empty-message">
+      <p>No hay mecánicos registrados.</p>
+    </div>
+    <ion-card *ngFor="let mecanico of mecanicos">
+      <img [src]="mecanico.foto || 'assets/default-profile.png'" alt="{{ mecanico.nombre }}" />
+      <ion-card-header>
+        <ion-card-title>{{ mecanico.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Especialidad:</strong> {{ mecanico.especialidad }}</p>
+        <p><strong>Localidad:</strong> {{ mecanico.localidad }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
