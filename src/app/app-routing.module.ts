@@ -79,7 +79,11 @@ const routes: Routes = [
     path: 'ayuda',
     loadChildren: () => import('./pages/ayuda/ayuda.module').then( m => m.AyudaPageModule),
     canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  },  {
+    path: 'factura',
+    loadChildren: () => import('./pages/factura/factura.module').then( m => m.FacturaPageModule)
   }
+
 
 
 

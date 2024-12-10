@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Factura</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Formulario para detalles del cliente -->
+  <form>
+    <ion-item>
+      <ion-label position="floating">Nombre Cliente</ion-label>
+      <ion-input type="text" id="nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input type="tel" id="telefono"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Matrícula</ion-label>
+      <ion-input type="text" id="matricula"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Marca del Automóvil</ion-label>
+      <ion-input type="text" id="marcaAuto"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" id="email"></ion-input>
+    </ion-item>
+  </form>
+
+  <!-- Opciones de servicios disponibles -->
+  <ion-list>
+    <ion-radio-group (ionChange)="seleccionarServicio($event.detail.value)">
+      <ion-list-header>
+        <ion-label>Servicios Disponibles</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let servicio of servicios">
+        <ion-label>{{ servicio.nombre }} - {{ servicio.precio | currency }}</ion-label>
+        <ion-radio slot="start" value="{{ servicio }}" [checked]="servicioSeleccionado === servicio"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <!-- Lista de piezas con botones para controlar la cantidad -->
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Piezas Disponibles</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let pieza of piezas">
+      <ion-label>
+        {{ pieza.nombre }} - {{ pieza.precio | currency }} (Disponible: {{ pieza.cantidad }})
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="restarPieza(pieza)">-</ion-button>
+        <ion-note>{{ pieza.seleccionada }}</ion-note>
+        <ion-button (click)="agregarPieza(pieza)">+</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <!-- Visualización del total calculado y botón para procesar la factura -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Total a Pagar: {{ total | currency }}</ion-card-title>
+    </ion-card-header>
+    <ion-button expand="block" (click)="procesarFactura()">Aceptar</ion-button>
+  </ion-card>
+</ion-content>
