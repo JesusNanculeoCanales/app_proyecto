@@ -34,13 +34,13 @@
 
   <!-- Opciones de servicios disponibles -->
   <ion-list>
-    <ion-radio-group (ionChange)="seleccionarServicio($event.detail.value)">
+    <ion-radio-group [(ngModel)]="servicioSeleccionado" name="servicio">
       <ion-list-header>
         <ion-label>Servicios Disponibles</ion-label>
       </ion-list-header>
       <ion-item *ngFor="let servicio of servicios">
         <ion-label>{{ servicio.nombre }} - {{ servicio.precio | currency }}</ion-label>
-        <ion-radio slot="start" value="{{ servicio }}" [checked]="servicioSeleccionado === servicio"></ion-radio>
+        <ion-radio slot="start" [value]="servicio"></ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>
