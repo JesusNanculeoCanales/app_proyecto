@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';  // Cambié el Router para usar el de Angular
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-agendar',
@@ -9,17 +9,16 @@ import { Router } from '@angular/router';  // Cambié el Router para usar el de 
   styleUrls: ['./agendar.page.scss'],
 })
 export class AgendarPage implements OnInit {
-
   constructor(
-    private loadingCtrl: LoadingController,  // Para manejar el modal de carga
-    private router: Router                   // Para redirigir al finalizar
+    private loadingCtrl: LoadingController, // Para manejar el modal de carga
+    private router: Router // Para redirigir al finalizar
   ) {}
 
   ngOnInit() {
     $(document).ready(() => {
-      $('#submitBtn').on('click', async (event: Event) => {  
+      $('#submitBtn').on('click', async (event: Event) => {
         event.preventDefault();
-        
+
         let isValid = true;
 
         // Validación del nombre
@@ -81,13 +80,22 @@ export class AgendarPage implements OnInit {
         if (isValid) {
           const loading = await this.loadingCtrl.create({
             message: 'Agendando...',
-            duration: 2000
+            duration: 2000,
           });
           await loading.present();
 
           loading.onDidDismiss().then(() => {
-            // Redirigir a la página de inicio
-            this.router.navigate(['/home']);
+            // Datos a enviar
+            const datos = {
+              matricula: matricula ? matricula.toString() : '',
+              marcaAuto: marcaAuto ? marcaAuto.toString() : '',
+              fecha: fecha ? fecha.toString() : '',
+            };
+
+            // Redirigir a la página de vehículos
+            this.router.navigate(['/vehiculos'], {
+              queryParams: { datos: JSON.stringify(datos) },
+            });
           });
         }
       });

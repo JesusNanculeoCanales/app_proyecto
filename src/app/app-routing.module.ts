@@ -87,6 +87,10 @@ const routes: Routes = [
     path: 'imprimir',
     loadChildren: () => import('./pages/imprimir/imprimir.module').then( m => m.ImprimirPageModule)
   },
+  {
+    path: 'vehiculos',
+    loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
+  },
 
  
 
