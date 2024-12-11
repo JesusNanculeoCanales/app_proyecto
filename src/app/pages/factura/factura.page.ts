@@ -68,15 +68,20 @@ export class FacturaPage implements OnInit {
     this.cdr.detectChanges(); 
   }
 
-  async procesarFactura() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Procesando factura...',
-      duration: 2000
-    });
-    await loading.present();
+  procesarFactura() {
+    const datosFactura = {
+      nombre: (document.getElementById('nombre') as HTMLInputElement).value,
+      telefono: (document.getElementById('telefono') as HTMLInputElement).value,
+      matricula: (document.getElementById('matricula') as HTMLInputElement).value,
+      marcaAuto: (document.getElementById('marcaAuto') as HTMLInputElement).value,
+      email: (document.getElementById('email') as HTMLInputElement).value,
+      servicio: this.servicioSeleccionado,
+      piezas: this.piezas.filter(pieza => pieza.seleccionada > 0),
+      total: this.total,
+    };
 
-    loading.onDidDismiss().then(() => {
-      this.router.navigate(['/home']);
+    this.router.navigate(['/imprimir'], {
+      queryParams: { factura: JSON.stringify(datosFactura) },
     });
   }
 }

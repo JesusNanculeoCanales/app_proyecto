@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Imprimir</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Resumen de la Factura</h2>
+  <p><strong>Cliente:</strong> {{ factura.nombre }}</p>
+  <p><strong>Teléfono:</strong> {{ factura.telefono }}</p>
+  <p><strong>Matrícula:</strong> {{ factura.matricula }}</p>
+  <p><strong>Marca del Automóvil:</strong> {{ factura.marcaAuto }}</p>
+  <p><strong>Email:</strong> {{ factura.email }}</p>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Servicios</ion-label>
+    </ion-list-header>
+    <ion-item *ngIf="factura.servicio">
+      <ion-label>{{ factura.servicio.nombre }} - {{ factura.servicio.precio | currency }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Piezas Seleccionadas</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let pieza of factura.piezas">
+      <ion-label>
+        {{ pieza.nombre }} - {{ pieza.seleccionada }} x {{ pieza.precio | currency }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Total: {{ factura.total | currency }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-button expand="block" (click)="imprimir()">Imprimir</ion-button>
+  <ion-spinner *ngIf="mostrandoAnimacion"></ion-spinner>
+  <p *ngIf="impresionExitosa">¡Impresión exitosa!</p>
+</ion-content>
