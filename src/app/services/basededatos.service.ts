@@ -5,6 +5,7 @@ import { Rol } from '../tablas/rol';
 import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Pieza } from '../tablas/pieza';
+import { Mecanico } from '../tablas/mecanico';
 
 @Injectable({
   providedIn: 'root'
@@ -126,36 +127,59 @@ export class BasededatosService {
   listaPiezas = new BehaviorSubject([]);
 
 
-// Crear tabla de mecánicos
-tablaMecanicos: string = `
-  CREATE TABLE IF NOT EXISTS mecanicos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre VARCHAR(50) NOT NULL,
-    especialidad VARCHAR(100) NOT NULL,
+  //Crear tabla de mecanicos
+  tablaMecanico: string =`CREATE TABLE IF NOT EXISTS mecanicos(
+    id_mecanico INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre VARCHAR(30) NOT NULL,
+    imagen BLOB,
+    especialidad VARCHAR(30) NOT NULL,
     localidad VARCHAR(100) NOT NULL,
-    foto TEXT
-  );
-`;
+    mail VARCHAR(100) NOT NULL,
+    contacto INTEGER NOT NULL
+  )`;
 
-// Registro de ejemplo para la tabla mecánicos
-registroMecanico1: string = `
-  INSERT OR IGNORE INTO mecanicos (nombre, especialidad, localidad, foto)
-  VALUES ('Bastian Nuñez', 'Frenos y Suspensión', 'Santiago, Chile', 'assets/icon/mecanico.jpeg');
-`;
+  registroMecanico1: string = `INSERT OR IGNORE INTO mecanicos(
+  id_mecanico,
+  nombre,
+  imagen,
+  especialidad,
+  localidad,
+  mail,
+  contacto
+  ) VALUES (
+  1,
+  'Bastian Nuñez',
+  ?,
+  'Frenos',
+  'Quilicura',
+  'bastianinfo@gmail.com',
+  949611553
+  );`;
 
-registroMecanico2: string = `
-  INSERT OR IGNORE INTO mecanicos (nombre, especialidad, localidad, foto)
-  VALUES ('Joel Salas', 'Motores', 'Valparaíso, Chile', 'assets/icon/mecanico1.jpg');
-`;
+  registroMecanico2: string = `INSERT OR IGNORE INTO mecanicos(
+    id_mecanico,
+    nombre,
+    imagen,
+    especialidad,
+    localidad,
+    mail,
+    contacto
+    ) VALUES (
+    2,
+    'Joel Salas',
+    ?,
+    'Motor',
+    'Cerro Navia',
+    'joelsalas123@gmail.com',
+    987654321
+    );`;
+  
+  imagenMecanico1 = '../../assets/icon/mecanico2.jpeg'
+
+  imagenMecanico2 = '../../assets/icon/mecanico1.jpg'
 
 
-
-
-
-
-
-
-
+  listaMecanicos = new BehaviorSubject([]);
 
 
 
@@ -384,6 +408,7 @@ async actualizarPieza(id_pieza: number, nombre: string, descripcion: string, can
       [nombre, descripcion, cantidad, precio, usuario_idusu, id_pieza]
     );
     console.log('Resultado de la actualización:', res);
+    this.buscarPiezas();
     if (res.rowsAffected === 0) {
       console.warn('No se encontró la pieza con el ID proporcionado.');
     }
@@ -439,37 +464,103 @@ async actualizarClaveUsuario(correo: string, nuevaClave: string): Promise<void> 
 
 
 
-async anadirMecanico(nombre: string, especialidad: string, localidad: string, foto: string): Promise<void> {
-  const query = `
-    INSERT INTO mecanicos (nombre, especialidad, localidad, foto)
-    VALUES (?, ?, ?, ?);
-  `;
-  try {
-    await this.database.executeSql(query, [nombre, especialidad, localidad, foto]);
-    this.presentAlertExito('Mecánico agregado exitosamente.');
-  } catch (e: any) {
-    this.presentAlert('Error al agregar mecánico: ' + e.message);
-  }
+// Mecánicos
+fetchMecanicos(): Observable<Mecanico[]> {
+  return this.listaMecanicos.asObservable();
 }
-async obtenerMecanicos(): Promise<any[]> {
-  try {
-    const res = await this.database.executeSql('SELECT * FROM mecanicos', []);
-    let mecanicos: any[] = [];
-    for (let i = 0; i < res.rows.length; i++) {
-      mecanicos.push(res.rows.item(i));
+
+buscarMecanicos() {
+  return this.database.executeSql('SELECT * FROM mecanicos', []).then(res => {
+    let items: Mecanico[] = [];
+
+    if (res.rows.length > 0) {
+      for (var i = 0; i < res.rows.length; i++) {
+        items.push({
+          id_mecanico: res.rows.item(i).id_mecanico,
+          nombre: res.rows.item(i).nombre,
+          imagen: res.rows.item(i).imagen,
+          especialidad: res.rows.item(i).especialidad,
+          localidad: res.rows.item(i).localidad,
+          mail: res.rows.item(i).mail,
+          contacto: res.rows.item(i).contacto
+        });
+      }
     }
-    return mecanicos;
-  } catch (e: any) {
-    this.presentAlert('Error al obtener los mecánicos: ' + e.message);
-    return [];
+
+    this.listaMecanicos.next(items as any);
+
+  }).catch(e => {
+    this.presentAlert('Error de buscar Mecánicos: ' + e.message);
+  });
+}
+
+async anadirMecanico(nombre: string, imagen: any, especialidad: string, localidad: string, mail: string, contacto: number) {
+  try {
+    const res = await this.database.executeSql('INSERT INTO mecanicos(nombre, imagen, especialidad, localidad, mail, contacto) VALUES (?, ?, ?, ?, ?, ?);', 
+    [nombre, imagen, especialidad, localidad, mail, contacto]);
+    // Obtener la ID del mecánico recién insertado
+    const id_mecanico = res.insertId;
+
+    // Llamar a buscarMecanicos() u otra lógica si es necesario
+    await this.buscarMecanicos();
+
+    // Devolver la ID del mecánico recién insertado
+    return id_mecanico;
+  }
+  catch (e: any) {
+    this.presentAlert('Error de insertar Mecánico: ' + e.message);
   }
 }
-async borrarMecanico(id: number): Promise<void> {
+
+
+borrarMecanico(id_mecanico: any) {
+  return this.database.executeSql('DELETE FROM mecanicos WHERE id_mecanico = ?;', [id_mecanico]).then(res => {
+    this.buscarMecanicos();
+  }).catch(e => {
+    this.presentAlert('Error de borrar Mecánico: ' + e.message);
+  })
+}
+
+// Buscar un mecánico por su ID
+async buscarMecanicoPorId(id_mecanico: number): Promise<any> {
   try {
-    await this.database.executeSql('DELETE FROM mecanicos WHERE id = ?', [id]);
-    this.presentAlertExito('Mecánico eliminado exitosamente.');
+    const res = await this.database.executeSql('SELECT * FROM mecanicos WHERE id_mecanico = ?', [id_mecanico]);
+    if (res.rows.length > 0) {
+      return res.rows.item(0);  
+    }
+    return null;  
   } catch (e: any) {
-    this.presentAlert('Error al eliminar mecánico: ' + e.message);
+    this.presentAlert('Error al buscar el mecánico: ' + e.message);
+    return null;
+  }
+}
+
+// Método para actualizar un mecánico
+async actualizarMecanico(id_mecanico: number, nombre: string, imagen: Blob, especialidad: string, localidad: string, mail: string, contacto: number): Promise<void> {
+  console.log('Datos recibidos en actualizarMecanico:', {
+    id_mecanico,
+    nombre,
+    imagen,
+    especialidad,
+    localidad,
+    mail,
+    contacto,
+  });
+
+  try {
+    const res = await this.database.executeSql(
+      'UPDATE mecanicos SET nombre = ?, imagen = ?, especialidad = ?, localidad = ?, mail = ?, contacto = ? WHERE id_mecanico = ?;',
+      [nombre, imagen, especialidad, localidad, mail, contacto, id_mecanico]
+    );
+    console.log('Resultado de la actualización:', res);
+    this.buscarMecanicos();
+    if (res.rowsAffected === 0) {
+      console.warn('No se encontró el mecánico con el ID proporcionado.');
+    }
+  } catch (e: any) {
+    console.error('Error al actualizar el mecánico:', e);
+    this.presentAlert('Error al actualizar el mecánico: ' + e.message);
+    throw e;  // Lanza el error para que sea capturado en la página
   }
 }
 
@@ -527,6 +618,7 @@ async borrarMecanico(id: number): Promise<void> {
       await this.database.executeSql(this.tablaRol, []);
       await this.database.executeSql(this.tablaUsuario, []);
       await this.database.executeSql(this.tablaPieza, []);
+      await this.database.executeSql(this.tablaMecanico, []);
 
       //INSERT DE REGISTROS
       await this.database.executeSql(this.registroRol1, []);
@@ -538,14 +630,14 @@ async borrarMecanico(id: number): Promise<void> {
       await this.database.executeSql(this.registroPieza1, []);
       await this.database.executeSql(this.registroPieza2, []);
 
-      await this.database.executeSql(this.registroMecanico1, []); // Registro ejemplo
-      await this.database.executeSql(this.registroMecanico2, []); // Registro ejemplo
-  
+      await this.database.executeSql(this.registroMecanico1, [this.imagenMecanico1]);
+      await this.database.executeSql(this.registroMecanico2, [this.imagenMecanico2]);
 
       this.isDBReady.next(true);
       this.buscarRoles();
       this.buscarUsuarios();
       this.buscarPiezas();
+      this.buscarMecanicos();
     } catch (e: any) {
       this.presentAlert('Error de crear Tablas: ' + e.message);
     }

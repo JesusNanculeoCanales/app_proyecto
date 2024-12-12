@@ -14,6 +14,7 @@ export class EditPiezaPage implements OnInit {
   descripcion!: string;
   cantidad!: number;
   precio!:number;
+  usuario_idusu!: number;
 
   constructor(
     private db: BasededatosService,  // Usamos BasededatosService para SQLite
@@ -32,6 +33,7 @@ export class EditPiezaPage implements OnInit {
         this.descripcion = state?.['descripcion'] ?? this.descripcion;
         this.cantidad = state?.['cantidad'] ?? this.cantidad;
         this.precio = state?.['precio'] ?? this.precio;
+        this.usuario_idusu = state?.['usuario_idusu'] ?? this.usuario_idusu;
       }
     })
 
@@ -40,25 +42,17 @@ export class EditPiezaPage implements OnInit {
   ngOnInit() {}
 
   guardarCambios() {
-    console.log('Datos enviados a actualizarPieza:', {
-      id_pieza: this.id_pieza,
-      nombre: this.nombre,
-      descripcion: this.descripcion,
-      cantidad: this.cantidad,
-      precio: this.precio,
-    });
   
     const usu_actual = localStorage.getItem('id_usu');  // Obtener el ID del usuario actual
     if (usu_actual) {
-      const usuario_idusu = parseInt(usu_actual);
-  
+
       this.db.actualizarPieza(
         this.id_pieza,
         this.nombre,
         this.descripcion,
         this.cantidad,
         this.precio,
-        usuario_idusu
+        this.usuario_idusu
       ).then(() => {
         this.db.presentAlertExito('Pieza modificada exitosamente');
         this.router.navigate(['/list-piezas']);  // Redirigir a la lista de piezas

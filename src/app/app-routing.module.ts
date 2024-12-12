@@ -82,14 +82,23 @@ const routes: Routes = [
   },
   {
     path: 'factura',
-    loadChildren: () => import('./pages/factura/factura.module').then( m => m.FacturaPageModule)
-  },  {
+    loadChildren: () => import('./pages/factura/factura.module').then( m => m.FacturaPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  },
+  {
     path: 'imprimir',
-    loadChildren: () => import('./pages/imprimir/imprimir.module').then( m => m.ImprimirPageModule)
+    loadChildren: () => import('./pages/imprimir/imprimir.module').then( m => m.ImprimirPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
     path: 'vehiculos',
     loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
+    ,canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+  },
+  {
+    path: 'agregar-mecanico',
+    loadChildren: () => import('./pages/agregar-mecanico/agregar-mecanico.module').then( m => m.AgregarMecanicoPageModule),
+    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
 
  
