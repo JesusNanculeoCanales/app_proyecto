@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PiezaService } from '../../services/pieza.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { BasededatosService } from 'src/app/services/basededatos.service';
 import { AlertController, ToastController } from '@ionic/angular';
 
@@ -89,6 +89,24 @@ private toastController: ToastController) {}
       icon: 'close',
     },
   ];
+
+
+
+  //EDITAR PIEZAS
+  editarPieza(pieza: any) {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        id_pieza: pieza.id_pieza,
+        nombre: pieza.nombre,
+        descripcion: pieza.descripcion,
+        cantidad: pieza.cantidad,
+        precio: pieza.precio,
+        fecha_adquisicion: pieza.fecha_adquisicion,
+        usuario_idusu: pieza.usuario_idusu,
+      }
+    }
+    this.router.navigate(['/edit-pieza'], navigationExtras);
+  }
 
 }
 

@@ -9,57 +9,68 @@ import { BasededatosService } from 'src/app/services/basededatos.service';  // S
 })
 export class EditPiezaPage implements OnInit {
 
-  pieza: any = {
-    id_pieza: null,
-    nombre: '',
-    descripcion: '',
-    cantidad: 0,
-    precio: 0  // Aquí se usa 'precio' en lugar de 'valor'
-  };
+  id_pieza!: number;
+  nombre!: string;
+  descripcion!: string;
+  cantidad!: number;
+  precio!:number;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private db: BasededatosService,  // Usamos BasededatosService para SQLite
-    private router: Router
-  ) { }
+    private router: Router,
+    private activedRouter: ActivatedRoute
+  ) { 
 
-  ngOnInit() {
-    const id_pieza = this.activatedRoute.snapshot.paramMap.get('id_pieza');  // Obtener el ID de la pieza de la ruta
-    if (id_pieza) {
-      this.cargarPieza(parseInt(id_pieza));  // Cargar los datos de la pieza
-    }
-  }
+    //VALORES PARA EDITAR VIAJE
+    this.activedRouter.queryParams.subscribe(param => {
+      if (this.router.getCurrentNavigation()?.extras.state) {
 
-  // Cargar los datos de la pieza desde la base de datos
-  cargarPieza(id_pieza: number) {
-    this.db.buscarPiezaPorId(id_pieza).then((pieza) => {
-      if (pieza) {
-        this.pieza = pieza;  // Asignar los valores de la pieza al formulario
+        const state = this.router.getCurrentNavigation()?.extras?.state;
+
+        this.id_pieza = state?.['id_pieza'] ?? this.id_pieza;
+        this.nombre = state?.['nombre'] ?? this.nombre;
+        this.descripcion = state?.['descripcion'] ?? this.descripcion;
+        this.cantidad = state?.['cantidad'] ?? this.cantidad;
+        this.precio = state?.['precio'] ?? this.precio;
       }
-    });
+    })
+
   }
 
-  // Método para guardar los cambios en la pieza
+  ngOnInit() {}
+
   guardarCambios() {
+    console.log('Datos enviados a actualizarPieza:', {
+      id_pieza: this.id_pieza,
+      nombre: this.nombre,
+      descripcion: this.descripcion,
+      cantidad: this.cantidad,
+      precio: this.precio,
+    });
+  
     const usu_actual = localStorage.getItem('id_usu');  // Obtener el ID del usuario actual
     if (usu_actual) {
-      const usuario_idusu = parseInt(usu_actual);  // Convertir a número
-
+      const usuario_idusu = parseInt(usu_actual);
+  
       this.db.actualizarPieza(
-        this.pieza.id_pieza,
-        this.pieza.nombre,
-        this.pieza.descripcion,
-        this.pieza.cantidad,
-        this.pieza.precio,
+        this.id_pieza,
+        this.nombre,
+        this.descripcion,
+        this.cantidad,
+        this.precio,
         usuario_idusu
       ).then(() => {
         this.db.presentAlertExito('Pieza modificada exitosamente');
         this.router.navigate(['/list-piezas']);  // Redirigir a la lista de piezas
       }).catch((error) => {
+        console.error('Error al actualizar la pieza:', error);
         this.db.presentAlert('Error al modificar la pieza: ' + error.message);
       });
     } else {
       this.db.presentAlert('No se encontró un usuario logueado');
     }
   }
+  
+
+
 }

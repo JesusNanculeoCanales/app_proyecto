@@ -1,38 +1,36 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-back-button defaultHref="/list-piezas"></ion-back-button>  <!-- Redirige a la lista de piezas -->
+      <ion-back-button defaultHref="/list-piezas"></ion-back-button>  
     </ion-buttons>
     <ion-title>Modificar Pieza</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form>
     <ion-item lines="full">
       <ion-label position="floating">Nombre de la Pieza</ion-label>
-      <ion-input type="text" [(ngModel)]="pieza.nombre" required></ion-input>
+      <ion-input type="text" [(ngModel)]="nombre" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Descripción</ion-label>
-      <ion-input type="text" [(ngModel)]="pieza.descripcion" required></ion-input>
+      <ion-input type="text" [(ngModel)]="descripcion" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Cantidad</ion-label>
-      <ion-input type="number" [(ngModel)]="pieza.cantidad" required></ion-input>
+      <ion-input type="number" [(ngModel)]="cantidad" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Valor</ion-label>
-      <ion-input type="number" [(ngModel)]="pieza.precio" required></ion-input> <!-- Cambié valor a precio -->
-    </ion-item>
+      <ion-input type="number" [(ngModel)]="precio" required></ion-input>
+    </ion-item>¨
 
     <ion-row>
       <ion-col>
         <ion-button (click)="guardarCambios()" color="primary" expand="block">Guardar Cambios</ion-button>
       </ion-col>
     </ion-row>
-  </form>
 </ion-content>

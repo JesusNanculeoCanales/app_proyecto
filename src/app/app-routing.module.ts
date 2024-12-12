@@ -42,7 +42,7 @@ const routes: Routes = [
     canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
   {
-    path: 'edit-pieza/:id',
+    path: 'edit-pieza',
     loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then(m => m.EditPiezaPageModule),
     canActivate: [GuardService]  // Protegemos la ruta con el GuardService
   },
