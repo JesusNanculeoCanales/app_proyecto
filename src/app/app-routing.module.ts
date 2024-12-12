@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: '',
@@ -29,22 +29,22 @@ const routes: Routes = [
   {
     path: 'agendar',
     loadChildren: () => import('./pages/agendar/agendar.module').then(m => m.AgendarPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'list-piezas',
     loadChildren: () => import('./pages/list-piezas/list-piezas.module').then(m => m.ListPiezasPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'add-pieza',
     loadChildren: () => import('./pages/add-pieza/add-pieza.module').then(m => m.AddPiezaPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'edit-pieza',
     loadChildren: () => import('./pages/edit-pieza/edit-pieza.module').then(m => m.EditPiezaPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'error404',
@@ -53,7 +53,7 @@ const routes: Routes = [
   {
     path: 'geolocalizacion',
     loadChildren: () => import('./geolocalizacion/geolocalizacion.module').then(m => m.GeolocalizacionPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'recuperarcontrasena',
@@ -68,37 +68,37 @@ const routes: Routes = [
   {
     path: 'camara',
     loadChildren: () => import('./pages/camara/camara.module').then( m => m.CamaraPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'mecanicos',
     loadChildren: () => import('./pages/mecanicos/mecanicos.module').then( m => m.MecanicosPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'ayuda',
     loadChildren: () => import('./pages/ayuda/ayuda.module').then( m => m.AyudaPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'factura',
     loadChildren: () => import('./pages/factura/factura.module').then( m => m.FacturaPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'imprimir',
     loadChildren: () => import('./pages/imprimir/imprimir.module').then( m => m.ImprimirPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
   {
     path: 'vehiculos',
     loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
-    ,canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    ,canActivate: [GuardService]  
   },
   {
     path: 'agregar-mecanico',
     loadChildren: () => import('./pages/agregar-mecanico/agregar-mecanico.module').then( m => m.AgregarMecanicoPageModule),
-    canActivate: [GuardService]  // Protegemos la ruta con el GuardService
+    canActivate: [GuardService]  
   },
 
  

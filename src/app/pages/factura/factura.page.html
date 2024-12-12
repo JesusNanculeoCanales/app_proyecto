@@ -14,22 +14,31 @@
       <ion-label position="floating">Nombre Cliente</ion-label>
       <ion-input type="text" id="nombre"></ion-input>
     </ion-item>
+    <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['nombre']">{{ errores['nombre'] }}</p>
+
     <ion-item>
       <ion-label position="floating">Teléfono</ion-label>
       <ion-input type="tel" id="telefono"></ion-input>
     </ion-item>
+    <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['telefono']">{{ errores['telefono'] }}</p>
+
     <ion-item>
       <ion-label position="floating">Matrícula</ion-label>
       <ion-input type="text" id="matricula"></ion-input>
     </ion-item>
+    <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['matricula']">{{ errores['matricula'] }}</p>
+
     <ion-item>
       <ion-label position="floating">Marca del Automóvil</ion-label>
       <ion-input type="text" id="marcaAuto"></ion-input>
     </ion-item>
+    <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['marcaAuto']">{{ errores['marcaAuto'] }}</p>
+
     <ion-item>
       <ion-label position="floating">Email</ion-label>
       <ion-input type="email" id="email"></ion-input>
     </ion-item>
+    <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['email']">{{ errores['email'] }}</p>
   </form>
 
   <!-- Opciones de servicios disponibles -->
