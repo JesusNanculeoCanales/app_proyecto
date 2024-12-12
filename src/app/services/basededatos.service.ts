@@ -126,7 +126,27 @@ export class BasededatosService {
   listaPiezas = new BehaviorSubject([]);
 
 
+// Crear tabla de mecánicos
+tablaMecanicos: string = `
+  CREATE TABLE IF NOT EXISTS mecanicos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    especialidad VARCHAR(100) NOT NULL,
+    localidad VARCHAR(100) NOT NULL,
+    foto TEXT
+  );
+`;
 
+// Registro de ejemplo para la tabla mecánicos
+registroMecanico1: string = `
+  INSERT OR IGNORE INTO mecanicos (nombre, especialidad, localidad, foto)
+  VALUES ('Bastian Nuñez', 'Frenos y Suspensión', 'Santiago, Chile', 'assets/icon/mecanico.jpeg');
+`;
+
+registroMecanico2: string = `
+  INSERT OR IGNORE INTO mecanicos (nombre, especialidad, localidad, foto)
+  VALUES ('Joel Salas', 'Motores', 'Valparaíso, Chile', 'assets/icon/mecanico1.jpg');
+`;
 
 
 
@@ -349,12 +369,26 @@ async buscarPiezaPorId(id_pieza: number): Promise<any> {
 
 // Método para actualizar una pieza
 async actualizarPieza(id_pieza: number, nombre: string, descripcion: string, cantidad: number, precio: number, usuario_idusu: number): Promise<void> {
+  console.log('Datos recibidos en actualizarPieza:', {
+    id_pieza,
+    nombre,
+    descripcion,
+    cantidad,
+    precio,
+    usuario_idusu,
+  });
+
   try {
-    await this.database.executeSql(
+    const res = await this.database.executeSql(
       'UPDATE piezas SET nombre = ?, descripcion = ?, cantidad = ?, precio = ?, usuario_idusu = ? WHERE id_pieza = ?;',
       [nombre, descripcion, cantidad, precio, usuario_idusu, id_pieza]
     );
+    console.log('Resultado de la actualización:', res);
+    if (res.rowsAffected === 0) {
+      console.warn('No se encontró la pieza con el ID proporcionado.');
+    }
   } catch (e: any) {
+    console.error('Error al actualizar la pieza:', e);
     this.presentAlert('Error al actualizar la pieza: ' + e.message);
     throw e;  // Lanza el error para que sea capturado en la página
   }
@@ -373,23 +407,7 @@ async actualizarPieza(id_pieza: number, nombre: string, descripcion: string, can
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Buscar el correo en la base de datos SQLite1
+// Buscar el correo en la base de datos SQLite
 async buscarUsuarioPorCorreo(correo: string): Promise<Usuario | null> {
   try {
     const res = await this.database.executeSql('SELECT * FROM usuarios WHERE correo = ?;', [correo]);
@@ -421,6 +439,39 @@ async actualizarClaveUsuario(correo: string, nuevaClave: string): Promise<void> 
 
 
 
+async anadirMecanico(nombre: string, especialidad: string, localidad: string, foto: string): Promise<void> {
+  const query = `
+    INSERT INTO mecanicos (nombre, especialidad, localidad, foto)
+    VALUES (?, ?, ?, ?);
+  `;
+  try {
+    await this.database.executeSql(query, [nombre, especialidad, localidad, foto]);
+    this.presentAlertExito('Mecánico agregado exitosamente.');
+  } catch (e: any) {
+    this.presentAlert('Error al agregar mecánico: ' + e.message);
+  }
+}
+async obtenerMecanicos(): Promise<any[]> {
+  try {
+    const res = await this.database.executeSql('SELECT * FROM mecanicos', []);
+    let mecanicos: any[] = [];
+    for (let i = 0; i < res.rows.length; i++) {
+      mecanicos.push(res.rows.item(i));
+    }
+    return mecanicos;
+  } catch (e: any) {
+    this.presentAlert('Error al obtener los mecánicos: ' + e.message);
+    return [];
+  }
+}
+async borrarMecanico(id: number): Promise<void> {
+  try {
+    await this.database.executeSql('DELETE FROM mecanicos WHERE id = ?', [id]);
+    this.presentAlertExito('Mecánico eliminado exitosamente.');
+  } catch (e: any) {
+    this.presentAlert('Error al eliminar mecánico: ' + e.message);
+  }
+}
 
 
 
@@ -486,6 +537,10 @@ async actualizarClaveUsuario(correo: string, nuevaClave: string): Promise<void> 
 
       await this.database.executeSql(this.registroPieza1, []);
       await this.database.executeSql(this.registroPieza2, []);
+
+      await this.database.executeSql(this.registroMecanico1, []); // Registro ejemplo
+      await this.database.executeSql(this.registroMecanico2, []); // Registro ejemplo
+  
 
       this.isDBReady.next(true);
       this.buscarRoles();

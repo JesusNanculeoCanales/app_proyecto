@@ -28,7 +28,7 @@
       </ion-label>
 
       <!-- Botón para modificar la pieza -->
-      <ion-button color="warning" [routerLink]="['/edit-pieza', pieza.id_pieza]">
+      <ion-button color="warning" (click)="editarPieza(pieza)">
         Modificar
       </ion-button>
 
