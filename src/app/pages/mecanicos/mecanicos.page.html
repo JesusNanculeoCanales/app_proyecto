@@ -3,9 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Lista de mecanicos</ion-title>
-
-
+    <ion-title>Lista de Mecánicos</ion-title>
 
     <ion-buttons slot="end">
       <ion-button color="primary" [routerLink]="['/agregar-mecanico']">
@@ -20,12 +18,26 @@
     <ion-item *ngFor="let mecanico of listaMecanico">
       <ion-label>
         <h2>{{ mecanico.nombre }}</h2>
-        <img [src]="mecanico.imagen">
-        <p>Localidad: {{ mecanico.localidad }}</p>
-        <p>Especialidad:{{ mecanico.especialidad }}</p>
-        <p>Contacto:{{ mecanico.contacto }}</p>
-        <p>Mail:{{ mecanico.mail }}</p>
+        <img
+          [src]="mecanico.imagen"
+          alt="Imagen del mecánico"
+          style="width: 100%; max-height: 150px; object-fit: cover; margin: 10px 0;"
+        />
+        <p><strong>Localidad:</strong> {{ mecanico.localidad }}</p>
+        <p><strong>Especialidad:</strong> {{ mecanico.especialidad }}</p>
+        <p><strong>Contacto:</strong> {{ mecanico.contacto }}</p>
+        <p><strong>Email:</strong> {{ mecanico.mail }}</p>
 
+        <!-- Acciones como texto -->
+        <div style="margin-top: 10px;">
+          <a
+            (click)="crearAlertaELIMINAR(mecanico.id_mecanico)"
+            style="color: red; text-decoration: underline; cursor: pointer; font-weight: bold;"
+          >
+            Eliminar
+          </a>
+          &nbsp;
+        </div>
       </ion-label>
     </ion-item>
   </ion-list>

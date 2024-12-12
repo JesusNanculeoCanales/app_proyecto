@@ -536,7 +536,15 @@ async buscarMecanicoPorId(id_mecanico: number): Promise<any> {
 }
 
 // Método para actualizar un mecánico
-async actualizarMecanico(id_mecanico: number, nombre: string, imagen: Blob, especialidad: string, localidad: string, mail: string, contacto: number): Promise<void> {
+async actualizarMecanico(
+  id_mecanico: number,
+  nombre: string,
+  imagen: Blob | string,
+  especialidad: string,
+  localidad: string,
+  mail: string,
+  contacto: number
+): Promise<void> {
   console.log('Datos recibidos en actualizarMecanico:', {
     id_mecanico,
     nombre,
@@ -552,17 +560,24 @@ async actualizarMecanico(id_mecanico: number, nombre: string, imagen: Blob, espe
       'UPDATE mecanicos SET nombre = ?, imagen = ?, especialidad = ?, localidad = ?, mail = ?, contacto = ? WHERE id_mecanico = ?;',
       [nombre, imagen, especialidad, localidad, mail, contacto, id_mecanico]
     );
+
     console.log('Resultado de la actualización:', res);
+
+    // Recargar la lista de mecánicos después de actualizar
     this.buscarMecanicos();
+
     if (res.rowsAffected === 0) {
       console.warn('No se encontró el mecánico con el ID proporcionado.');
     }
   } catch (e: any) {
     console.error('Error al actualizar el mecánico:', e);
     this.presentAlert('Error al actualizar el mecánico: ' + e.message);
-    throw e;  // Lanza el error para que sea capturado en la página
+    throw e; // Lanza el error para que sea capturado en la página
   }
 }
+
+
+
 
 
 

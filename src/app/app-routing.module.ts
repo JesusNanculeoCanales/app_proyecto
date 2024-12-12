@@ -100,11 +100,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/agregar-mecanico/agregar-mecanico.module').then( m => m.AgregarMecanicoPageModule),
     canActivate: [GuardService]  
   },
-
- 
-
-
-
+  
 
 ];
 

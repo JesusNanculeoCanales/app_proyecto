@@ -12,21 +12,25 @@
     <ion-label position="floating">Nombre de la Pieza</ion-label>
     <ion-input [(ngModel)]="pieza.nombre"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['nombre']">{{ errores['nombre'] }}</p>
 
   <ion-item>
     <ion-label position="floating">Descripción</ion-label>
     <ion-input [(ngModel)]="pieza.descripcion"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['descripcion']">{{ errores['descripcion'] }}</p>
 
   <ion-item>
     <ion-label position="floating">Cantidad</ion-label>
     <ion-input [(ngModel)]="pieza.cantidad" type="number"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['cantidad']">{{ errores['cantidad'] }}</p>
 
   <ion-item>
     <ion-label position="floating">Precio</ion-label>
     <ion-input [(ngModel)]="pieza.precio" type="number"></ion-input>  <!-- Campo de valor -->
   </ion-item>
+  <p style="color: red; font-size: 12px; margin: 5px 0;" *ngIf="errores['precio']">{{ errores['precio'] }}</p>
 
   <ion-button expand="block" (click)="crearPieza()">Crear Pieza</ion-button>
 </ion-content>

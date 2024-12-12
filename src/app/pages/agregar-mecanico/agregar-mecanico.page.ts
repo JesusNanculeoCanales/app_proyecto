@@ -9,60 +9,75 @@ import { BasededatosService } from 'src/app/services/basededatos.service';
   styleUrls: ['./agregar-mecanico.page.scss'],
 })
 export class AgregarMecanicoPage {
-
   mecanico = {
-    id: '',
     nombre: '',
-    imagen: '',  
     especialidad: '',
     localidad: '',
     mail: '',
-    contacto: 0
+    contacto: 0,
   };
+
+  imagenURL?: string | ArrayBuffer | null;
+  errores: { [key: string]: string } = {};
 
   constructor(
     private router: Router,
     private db: BasededatosService
   ) {}
 
-  // Método para crear un nuevo mecánico
   async crearMecanico() {
-    try {
+    // Limpiar errores
+    this.errores = {};
 
+    // Validaciones
+    if (!this.mecanico.nombre.trim()) {
+      this.errores['nombre'] = 'El nombre del mecánico es obligatorio.';
+    }
+    if (!this.mecanico.especialidad.trim()) {
+      this.errores['especialidad'] = 'La especialidad es obligatoria.';
+    }
+    if (!this.mecanico.localidad.trim()) {
+      this.errores['localidad'] = 'La localidad es obligatoria.';
+    }
+    if (!this.mecanico.mail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.mecanico.mail)) {
+      this.errores['mail'] = 'El correo es obligatorio y debe ser válido.';
+    }
+    if (!this.mecanico.contacto || !/^\d{9}$/.test(this.mecanico.contacto.toString())) {
+      this.errores['contacto'] = 'El contacto es obligatorio y debe tener 9 dígitos.';
+    }
+
+    // Si hay errores, no continuar
+    if (Object.keys(this.errores).length > 0) {
+      return;
+    }
+
+    try {
       await this.db.anadirMecanico(
         this.mecanico.nombre,
-        this.imagenURL,
+        this.imagenURL || '',
         this.mecanico.especialidad,
         this.mecanico.localidad,
         this.mecanico.mail,
         this.mecanico.contacto
       );
 
-      this.router.navigate(['/list-mecanicos']);
+      // Redirigir directamente después de agregar el mecánico
+      this.router.navigate(['/mecanicos']);
       this.db.presentAlertExito('Mecánico agregado: ' + this.mecanico.nombre);
-
-    } catch (e:any) {
+    } catch (e: any) {
       this.db.presentAlert('Error al agregar el mecánico: ' + e.message);
     }
   }
 
-  // Función para convertir la imagen a Blob
-  async loadImageAsBlob(imagePath: string): Promise<Blob> {
-    const response = await fetch(imagePath);
-    const imageBlob = await response.blob();
-    return imageBlob;
-  }
-
-  imagenURL?: string | ArrayBuffer | null;
-
-  takePicture = async () => {
-    const image2 = await Camera.getPhoto({
+  // Tomar foto (opcional)
+  async takePicture() {
+    const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Prompt,
     });
 
-    this.imagenURL = image2.dataUrl;
-  };
+    this.imagenURL = image.dataUrl;
+  }
 }

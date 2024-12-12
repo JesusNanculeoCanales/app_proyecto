@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/mecanicos"></ion-back-button>  <!-- Redirige a la lista de mecánicos -->
+      <ion-back-button defaultHref="/mecanicos"></ion-back-button>
     </ion-buttons>
     <ion-title>Agregar Mecánico</ion-title>
   </ion-toolbar>
@@ -12,43 +12,40 @@
     <ion-label position="floating">Nombre del Mecánico</ion-label>
     <ion-input [(ngModel)]="mecanico.nombre" name="nombreMecanico"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px;" *ngIf="errores['nombre']">{{ errores['nombre'] }}</p>
 
-  
   <ion-item>
     <ion-button (click)="takePicture()" expand="block" shape="round" color="primary">
       <ion-icon slot="start" name="camera"></ion-icon>Tomar Foto
     </ion-button>
-    
   </ion-item>
-
-  <ion-item class="imagen"> 
-    <img
-        *ngIf="imagenURL"
-        [src]="imagenURL"
-        alt="image"
-      />
+  <ion-item class="imagen">
+    <img *ngIf="imagenURL" [src]="imagenURL" alt="image" />
   </ion-item>
-
 
   <ion-item>
     <ion-label position="floating">Especialidad</ion-label>
     <ion-input [(ngModel)]="mecanico.especialidad" name="especialidadMecanico"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px;" *ngIf="errores['especialidad']">{{ errores['especialidad'] }}</p>
 
   <ion-item>
     <ion-label position="floating">Localidad</ion-label>
     <ion-input [(ngModel)]="mecanico.localidad" name="localidadMecanico"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px;" *ngIf="errores['localidad']">{{ errores['localidad'] }}</p>
 
   <ion-item>
     <ion-label position="floating">Correo</ion-label>
     <ion-input [(ngModel)]="mecanico.mail" type="email" name="mailMecanico"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px;" *ngIf="errores['mail']">{{ errores['mail'] }}</p>
 
   <ion-item>
     <ion-label position="floating">Contacto</ion-label>
     <ion-input [(ngModel)]="mecanico.contacto" type="number" name="contactoMecanico"></ion-input>
   </ion-item>
+  <p style="color: red; font-size: 12px;" *ngIf="errores['contacto']">{{ errores['contacto'] }}</p>
 
   <ion-button expand="block" (click)="crearMecanico()">Crear Mecánico</ion-button>
 </ion-content>
