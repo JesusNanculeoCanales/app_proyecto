@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/factura"></ion-back-button>  
     </ion-buttons>
-    <ion-title>Ficha Vehiculo</ion-title>
+    <ion-title>Ficha Vehículo</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -24,5 +24,7 @@
       <p>{{ datosVehiculo.fecha }}</p>
     </ion-item>
   </ion-list>
-</ion-content>
 
+  <!-- Botón Confirmar -->
+  <ion-button expand="block" (click)="confirmar()">Confirmar</ion-button>
+</ion-content>
